@@ -71,10 +71,6 @@ public:
         if (VmbErrorSuccess == res) {
             if (VmbFrameStatusComplete == frameStatus) {
                 // Frame receivd successfully
-                numcfc::Logger::LogAndEcho("Frame received successfully");
-
-                claim::AttributeMessage amsg;
-
                 VmbUint32_t width = 0, height = 0;
                 VmbUchar_t* data = 0;
                 VmbPixelFormatType pixelFormat = static_cast<VmbPixelFormatType>(0);
@@ -107,12 +103,11 @@ public:
 
                 cv::imencode(".jpg", mat, encodingBuffer, encodingParameters);
 
+                claim::AttributeMessage amsg;
                 amsg.m_type = "Image";
-
                 amsg.m_attributes["rows"] = std::to_string(mat.rows);
                 amsg.m_attributes["cols"] = std::to_string(mat.cols);
                 amsg.m_attributes["data"] = std::string(encodingBuffer.begin(), encodingBuffer.end());
-
                 postOffice.Send(amsg);
             }
             else {
@@ -219,7 +214,6 @@ int main(int argc, char* argv[])
                 }
                 
                 while (isRunning) {
-                    numcfc::Logger::LogAndEcho("Sleeping...");
                     std::this_thread::sleep_for(std::chrono::seconds(1));
                 }
             }
