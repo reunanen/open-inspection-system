@@ -1,0 +1,9 @@
+[submodule "lib/opencv-build-vs"]
+	path = lib/opencv-build-vs
+	url = https://github.com/reunanen/opencv-build-vs
+[submodule "lib/isto"]
+	path = lib/isto
+	url = https://github.com/reunanen/isto
+[submodule "lib/Numcore_messaging_library"]
+	path = lib/Numcore_messaging_library
+	url = https://github.com/reunanen/Numcore_messaging_library
