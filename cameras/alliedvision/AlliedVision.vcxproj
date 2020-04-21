@@ -65,7 +65,8 @@
       <AdditionalDependencies>$(OutDir)opencv.lib;$(OutDir)Numcore_messaging_library.lib;VimbaCPP/Lib/Win64/VimbaCPP.lib</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy /y VimbaCPP\Bin\Win64\*.dll $(OutDir)</Command>
+      <Command>xcopy /y VimbaCPP\Bin\Win64\VimbaC.dll $(OutDir)
+xcopy /y VimbaCPP\Bin\Win64\VimbaCPPd.dll $(OutDir)</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -86,7 +87,8 @@
       <AdditionalDependencies>$(OutDir)opencv.lib;$(OutDir)Numcore_messaging_library.lib;VimbaCPP/Lib/Win64/VimbaCPP.lib</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy /y VimbaCPP\Bin\Win64\*.dll $(OutDir)</Command>
+      <Command>xcopy /y VimbaCPP\Bin\Win64\VimbaC.dll $(OutDir)
+xcopy /y VimbaCPP\Bin\Win64\VimbaCPP.dll $(OutDir)</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>

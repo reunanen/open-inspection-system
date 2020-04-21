@@ -13,3 +13,6 @@
 [submodule "lib/tuc"]
 	path = lib/tuc
 	url = https://github.com/reunanen/tuc
+[submodule "lib/nsis-nssm"]
+	path = lib/nsis-nssm
+	url = https://github.com/reunanen/nsis-nssm
