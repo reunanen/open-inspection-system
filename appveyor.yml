@@ -1,3 +1,4 @@
+image: Visual Studio 2017
 init:
   - set PATH=%PATH%;C:\Program Files (x86)\NSIS\bin
 install:
