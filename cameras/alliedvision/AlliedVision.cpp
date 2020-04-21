@@ -110,13 +110,18 @@ public:
 
                 LogFramesPerSecond();
             }
-            else {
-                // Frame received unsuccessfully
-                numcfc::Logger::LogAndEcho("Frame not received successfully", "log_errors");
+            else if (VmbFrameStatusIncomplete == frameStatus) {
+                LogIncompleteFramesPerSecond();
             }
-        }
-        else {
-            numcfc::Logger::LogAndEcho("Error calling GetReceiveStatus", "log_errors");
+            else if (VmbFrameStatusTooSmall == frameStatus) {
+                numcfc::Logger::LogAndEcho("Frame buffer too small", "log_errors");
+            }
+            else if (VmbFrameStatusInvalid == frameStatus) {
+                numcfc::Logger::LogAndEcho("Frame buffer not valid", "log_errors");
+            }
+            else {
+                numcfc::Logger::LogAndEcho("Unexpected frame status: " + std::to_string(frameStatus), "log_errors");
+            }
         }
 
         camera->QueueFrame(frame);
@@ -148,6 +153,26 @@ private:
         }
     }
 
+    void LogIncompleteFramesPerSecond() {
+        const auto now = std::chrono::steady_clock::now();
+        recentIncompleteFrameTimestamps.push_back(now);
+        while (recentIncompleteFrameTimestamps.size() > 2 && now - recentIncompleteFrameTimestamps.front() < std::chrono::milliseconds(1000)) {
+            recentIncompleteFrameTimestamps.pop_front();
+        }
+        if (recentIncompleteFrameTimestamps.size() > 1) {
+            if (now >= fpsIncompleteFramesNextLog) {
+                const double period_s = std::chrono::duration_cast<std::chrono::milliseconds>(now - recentIncompleteFrameTimestamps.front()).count() / 1000.0;
+                const double fps = (recentIncompleteFrameTimestamps.size() - 1) / period_s;
+                numcfc::Logger::LogAndEcho("Incomplete frames per second: " + tuc::to_string(fps, 6), "log_incomplete_frames");
+                fpsIncompleteFramesNextLog += std::chrono::milliseconds(1000);
+            }
+        }
+        else {
+            numcfc::Logger::LogAndEcho("First incomplete frame received", "log_incomplete_frames");
+            fpsIncompleteFramesNextLog = std::chrono::steady_clock::now() + std::chrono::milliseconds(1000);
+        }
+    }
+
     double GetCameraTemperature() {
         double temperature = std::numeric_limits<double>::quiet_NaN();
         CHECK_VIMBA(temperatureFeature->GetValue(temperature));
@@ -158,7 +183,9 @@ private:
     shared_buffer<ImageEncodingInputItem>& imageEncodingInput;
     uint64_t counter = 0;
     std::deque<std::chrono::steady_clock::time_point> recentTimestamps;
+    std::deque<std::chrono::steady_clock::time_point> recentIncompleteFrameTimestamps;
     std::chrono::steady_clock::time_point fpsNextLog;
+    std::chrono::steady_clock::time_point fpsIncompleteFramesNextLog;
     AVT::VmbAPI::FeaturePtr temperatureFeature;
 };
 
