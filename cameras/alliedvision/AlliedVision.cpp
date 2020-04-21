@@ -13,6 +13,7 @@
 
 #include <unordered_map>
 #include <iomanip>
+#include <deque>
 
 #define CHECK_VIMBA(call) {                                                                \
     const auto result = call;                                                              \
@@ -132,7 +133,7 @@ public:
 
                 ++counter;
 
-                // TODO: log frames per second
+                LogFramesPerSecond();
             }
             else {
                 // Frame received unsuccessfully
@@ -147,10 +148,33 @@ public:
     }
 
 private:
+    void LogFramesPerSecond() {
+        const auto now = std::chrono::steady_clock::now();
+        recentTimestamps.push_back(now);
+        while (recentTimestamps.size() > 2 && now - recentTimestamps.front() < std::chrono::milliseconds(1000)) {
+            recentTimestamps.pop_front();
+        }
+        if (recentTimestamps.size() > 1) {
+            if (now - fpsLastLogged > std::chrono::milliseconds(1000)) {
+                const double period_s = std::chrono::duration_cast<std::chrono::milliseconds>(now - recentTimestamps.front()).count() / 1000.0;
+                const double fps = (recentTimestamps.size() - 1) / period_s;
+                std::ostringstream logEntry;
+                logEntry << "FPS: " << fps;
+                numcfc::Logger::LogAndEcho(logEntry.str(), "log_fps");
+                fpsLastLogged = now;
+            }
+        }
+        else {
+            numcfc::Logger::LogAndEcho("First frame received", "log_fps");
+        }
+    }
+
     AVT::VmbAPI::CameraPtr camera;
     slaim::PostOffice& postOffice;
     std::vector<uchar> encodingBuffer;
     uint64_t counter = 0;
+    std::deque<std::chrono::steady_clock::time_point> recentTimestamps;
+    std::chrono::steady_clock::time_point fpsLastLogged;
 };
 
 int main(int argc, char* argv[])
