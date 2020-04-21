@@ -135,7 +135,7 @@ public:
 private:
     static void UpdateFramesPerSecond(std::deque<std::chrono::steady_clock::time_point>& recentTimestamps, const std::chrono::steady_clock::time_point& now) {
         recentTimestamps.push_back(now);
-        while (recentTimestamps.size() > 2 && now - recentTimestamps.front() < std::chrono::milliseconds(1000)) {
+        while (recentTimestamps.size() > 2 && now - recentTimestamps.front() > std::chrono::milliseconds(1000)) {
             recentTimestamps.pop_front();
         }
     }
