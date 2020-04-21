@@ -6,10 +6,13 @@
 #include <numcfc/IniFile.h>
 #include <numcfc/Logger.h>
 
+#include "../../lib/system_clock_time_point_string_conversion/system_clock_time_point_string_conversion.h"
+
 #include <opencv2/imgcodecs/imgcodecs.hpp>
 #include <opencv2/imgproc/imgproc.hpp> // required at least for Bayer conversion
 
 #include <unordered_map>
+#include <iomanip>
 
 #define CHECK_VIMBA(call) {                                                                \
     const auto result = call;                                                              \
@@ -101,14 +104,35 @@ public:
 
                 std::vector<int> encodingParameters; // TODO: add jpg quality parameter
 
-                cv::imencode(".jpg", mat, encodingBuffer, encodingParameters);
+                const std::string imageFormat = "jpg"; // TODO: make this configurable
+
+                cv::imencode("." + imageFormat, mat, encodingBuffer, encodingParameters);
+
+                const std::string timestamp = system_clock_time_point_string_conversion::to_string(std::chrono::system_clock::now());
+
+                const auto getId = [](const std::string& timestamp, size_t counter) {
+                    std::string id = timestamp;
+                    std::replace(id.begin(), id.end(), ':', '.');
+                    std::ostringstream oss;
+                    oss << std::hex << std::setw(16) << std::setfill('0') << counter;
+                    id += "_" + oss.str();
+                    return id;
+                };
 
                 claim::AttributeMessage amsg;
                 amsg.m_type = "Image";
+                amsg.m_attributes["id"] = getId(timestamp, counter);
+                amsg.m_attributes["timestamp"] = timestamp;
+                amsg.m_attributes["counter"] = std::to_string(counter);
                 amsg.m_attributes["rows"] = std::to_string(mat.rows);
                 amsg.m_attributes["cols"] = std::to_string(mat.cols);
                 amsg.m_attributes["data"] = std::string(encodingBuffer.begin(), encodingBuffer.end());
+                amsg.m_attributes["format"] = imageFormat;
                 postOffice.Send(amsg);
+
+                ++counter;
+
+                // TODO: log frames per second
             }
             else {
                 // Frame received unsuccessfully
@@ -126,6 +150,7 @@ private:
     AVT::VmbAPI::CameraPtr camera;
     slaim::PostOffice& postOffice;
     std::vector<uchar> encodingBuffer;
+    uint64_t counter = 0;
 };
 
 int main(int argc, char* argv[])
@@ -141,6 +166,10 @@ int main(int argc, char* argv[])
             claim::PostOffice postOffice;
 
             postOffice.Initialize(iniFile, "AV");
+
+            if (iniFile.IsDirty()) {
+                iniFile.Save();
+            }
 
             using namespace AVT::VmbAPI;
 
@@ -213,6 +242,10 @@ int main(int argc, char* argv[])
                     CHECK_VIMBA(feature->RunCommand());
                 }
                 
+                if (iniFile.IsDirty()) {
+                    iniFile.Save();
+                }
+
                 while (isRunning) {
                     std::this_thread::sleep_for(std::chrono::seconds(1));
                 }

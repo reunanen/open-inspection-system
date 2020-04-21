@@ -7,8 +7,6 @@
 #include <opencv2/imgcodecs/imgcodecs.hpp>
 #include <opencv2/highgui/highgui.hpp>
 
-#include <unordered_map>
-
 int main(int argc, char* argv[])
 {   
     numcfc::IniFile iniFile("ImageViewer.ini");
@@ -16,6 +14,10 @@ int main(int argc, char* argv[])
     claim::PostOffice postOffice;
     postOffice.Initialize(iniFile, "IV");
     postOffice.Subscribe("Image");
+
+    if (iniFile.IsDirty()) {
+        iniFile.Save();
+    }
 
     while (true) {
         slaim::Message msg;

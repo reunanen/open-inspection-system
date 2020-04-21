@@ -41,13 +41,13 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>.;../../lib/opencv-build-vs/include;../../lib/Numcore_messaging_library;$(VC_IncludePath);$(WindowsSDK_IncludePath)</IncludePath>
+    <IncludePath>../../lib/opencv-build-vs/include;../../lib/Numcore_messaging_library;$(VC_IncludePath);$(WindowsSDK_IncludePath)</IncludePath>
     <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
     <IntDir>$(Platform)\$(Configuration)\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>.;../../lib/opencv-build-vs/include;../../lib/Numcore_messaging_library;$(VC_IncludePath);$(WindowsSDK_IncludePath)</IncludePath>
+    <IncludePath>../../lib/opencv-build-vs/include;../../lib/Numcore_messaging_library;$(VC_IncludePath);$(WindowsSDK_IncludePath)</IncludePath>
     <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
     <IntDir>$(Platform)\$(Configuration)\</IntDir>
   </PropertyGroup>
@@ -62,7 +62,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>$(OutDir)/opencv.lib;$(OutDir)/Numcore_messaging_library.lib;User32.lib;Gdi32.lib;Comdlg32.lib</AdditionalDependencies>
+      <AdditionalDependencies>$(OutDir)opencv.lib;$(OutDir)Numcore_messaging_library.lib;User32.lib;Gdi32.lib;Comdlg32.lib</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
       <Command>
@@ -84,7 +84,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>$(OutDir)/opencv.lib;$(OutDir)/Numcore_messaging_library.lib;User32.lib;Gdi32.lib;Comdlg32.lib</AdditionalDependencies>
+      <AdditionalDependencies>$(OutDir)opencv.lib;$(OutDir)Numcore_messaging_library.lib;User32.lib;Gdi32.lib;Comdlg32.lib</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
       <Command>

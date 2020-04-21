@@ -17,7 +17,15 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Numcore_messaging_library",
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ImageViewer", "testing\imageviewer\ImageViewer.vcxproj", "{0890ECAC-BDEB-411F-A46F-162DFEE4408B}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ImageStorage", "imagestorage\ImageStorage.vcxproj", "{11579AE1-90EA-4886-954A-B746B0824C05}"
+	ProjectSection(ProjectDependencies) = postProject
+		{4375BAC5-0E9A-4B45-9792-903178269253} = {4375BAC5-0E9A-4B45-9792-903178269253}
+	EndProjectSection
+EndProject
 Global
+	GlobalSection(Performance) = preSolution
+		HasPerformanceSessions = true
+	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
 		Debug|x86 = Debug|x86
@@ -59,6 +67,12 @@ Global
 		{0890ECAC-BDEB-411F-A46F-162DFEE4408B}.Release|x64.ActiveCfg = Release|x64
 		{0890ECAC-BDEB-411F-A46F-162DFEE4408B}.Release|x64.Build.0 = Release|x64
 		{0890ECAC-BDEB-411F-A46F-162DFEE4408B}.Release|x86.ActiveCfg = Release|x64
+		{11579AE1-90EA-4886-954A-B746B0824C05}.Debug|x64.ActiveCfg = Debug|x64
+		{11579AE1-90EA-4886-954A-B746B0824C05}.Debug|x64.Build.0 = Debug|x64
+		{11579AE1-90EA-4886-954A-B746B0824C05}.Debug|x86.ActiveCfg = Debug|x64
+		{11579AE1-90EA-4886-954A-B746B0824C05}.Release|x64.ActiveCfg = Release|x64
+		{11579AE1-90EA-4886-954A-B746B0824C05}.Release|x64.Build.0 = Release|x64
+		{11579AE1-90EA-4886-954A-B746B0824C05}.Release|x86.ActiveCfg = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
