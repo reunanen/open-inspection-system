@@ -16,3 +16,6 @@
 [submodule "lib/nsis-nssm"]
 	path = lib/nsis-nssm
 	url = https://github.com/reunanen/nsis-nssm
+[submodule "lib/shared_buffer"]
+	path = lib/shared_buffer
+	url = https://github.com/reunanen/shared_buffer

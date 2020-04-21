@@ -8,7 +8,10 @@
 
 #include "../../lib/system_clock_time_point_string_conversion/system_clock_time_point_string_conversion.h"
 
+#include "../../lib/tuc/include/tuc/string.hpp"
 #include "../../lib/tuc/include/tuc/to_string.hpp"
+
+#include "../../lib/shared_buffer/shared_buffer.h"
 
 #include <opencv2/imgcodecs/imgcodecs.hpp>
 #include <opencv2/imgproc/imgproc.hpp> // required at least for Bayer conversion
@@ -62,17 +65,25 @@ void LogVimbaVersion(AVT::VmbAPI::VimbaSystem& vimbaSystem)
         + std::to_string(versionInfo.patch), "log_vimba_version");
 }
 
+struct ImageEncodingInputItem {
+    cv::Mat rawData;
+    VmbPixelFormatType pixelFormat = static_cast<VmbPixelFormatType>(0);
+    std::chrono::system_clock::time_point timestamp;
+    uint64_t counter = std::numeric_limits<uint64_t>::max();
+};
+
 class FrameObserver : public AVT::VmbAPI::IFrameObserver {
 public: 
-    FrameObserver(AVT::VmbAPI::CameraPtr camera, slaim::PostOffice& postOffice)
+    FrameObserver(AVT::VmbAPI::CameraPtr camera, shared_buffer<ImageEncodingInputItem>& imageEncodingInput)
         : AVT::VmbAPI::IFrameObserver( camera )
         , camera(camera)
-        , postOffice(postOffice)
+        , imageEncodingInput(imageEncodingInput)
     {
         CHECK_VIMBA(camera->GetFeatureByName("DeviceTemperature", temperatureFeature));
     }
 
     void FrameReceived(const AVT::VmbAPI::FramePtr frame) {
+        const auto timestamp = std::chrono::system_clock::now();
         VmbFrameStatusType frameStatus;
         const auto res = frame->GetReceiveStatus(frameStatus);
         if (VmbErrorSuccess == res) {
@@ -86,55 +97,16 @@ public:
                 CHECK_VIMBA(frame->GetBuffer(data));
                 CHECK_VIMBA(frame->GetPixelFormat(pixelFormat));
 
-                cv::Mat mat;
+                ImageEncodingInputItem imageEncodingInputItem;
 
-                switch (pixelFormat) {
-                    case VmbPixelFormatMono8:
-                    {
-                        mat = cv::Mat(height, width, CV_8UC1, data);
-                        break;
-                    }
-                    case VmbPixelFormatBayerRG8:
-                    {
-                        cv::Mat temp(height, width, CV_8UC1, data);
-                        cv::cvtColor(temp, mat, cv::COLOR_BayerBG2BGR);
-                        break;
-                    }
-                    default:
-                    {
-                        numcfc::Logger::LogAndEcho("Unsupported pixel format: " + std::to_string(pixelFormat), "log_errors");
-                    }
-                }
+                const cv::Mat temp(height, width, CV_8UC1, data);
+                temp.copyTo(imageEncodingInputItem.rawData);
 
-                std::vector<int> encodingParameters; // TODO: add jpg quality parameter
+                imageEncodingInputItem.pixelFormat = pixelFormat;
+                imageEncodingInputItem.timestamp = timestamp;
+                imageEncodingInputItem.counter = counter++;
 
-                const std::string imageFormat = "jpg"; // TODO: make this configurable
-
-                cv::imencode("." + imageFormat, mat, encodingBuffer, encodingParameters);
-
-                const std::string timestamp = system_clock_time_point_string_conversion::to_string(std::chrono::system_clock::now());
-
-                const auto getId = [](const std::string& timestamp, size_t counter) {
-                    std::string id = timestamp;
-                    std::replace(id.begin(), id.end(), ':', '.');
-                    std::ostringstream oss;
-                    oss << std::hex << std::setw(16) << std::setfill('0') << counter;
-                    id += "_" + oss.str();
-                    return id;
-                };
-
-                claim::AttributeMessage amsg;
-                amsg.m_type = "Image";
-                amsg.m_attributes["id"] = getId(timestamp, counter);
-                amsg.m_attributes["timestamp"] = timestamp;
-                amsg.m_attributes["counter"] = std::to_string(counter);
-                amsg.m_attributes["rows"] = std::to_string(mat.rows);
-                amsg.m_attributes["cols"] = std::to_string(mat.cols);
-                amsg.m_attributes["data"] = std::string(encodingBuffer.begin(), encodingBuffer.end());
-                amsg.m_attributes["format"] = imageFormat;
-                postOffice.Send(amsg);
-
-                ++counter;
+                imageEncodingInput.push_back(std::move(imageEncodingInputItem));
 
                 LogFramesPerSecond();
             }
@@ -183,8 +155,7 @@ private:
     }
 
     AVT::VmbAPI::CameraPtr camera;
-    slaim::PostOffice& postOffice;
-    std::vector<uchar> encodingBuffer;
+    shared_buffer<ImageEncodingInputItem>& imageEncodingInput;
     uint64_t counter = 0;
     std::deque<std::chrono::steady_clock::time_point> recentTimestamps;
     std::chrono::steady_clock::time_point fpsNextLog;
@@ -205,6 +176,18 @@ int main(int argc, char* argv[])
 
             postOffice.Initialize(iniFile, "AV");
 
+            const std::string imageFormat = iniFile.GetSetValue("ImageEncoding", "ImageFormat", "jpg");
+            const bool isJpeg = tuc::string::equal_case_insensitive(imageFormat, "jpg") || tuc::string::equal_case_insensitive(imageFormat, "jpeg");
+
+            const double jpegCompressionQuality = isJpeg
+                ? iniFile.GetSetValue("ImageEncoding", "JpegCompressionQuality", 90)
+                : std::numeric_limits<double>::quiet_NaN();
+
+            const auto defaultImageEncodingThreadCount = std::max(2u, std::thread::hardware_concurrency()) - 1;
+            const size_t imageEncodingThreadCount = static_cast<size_t>(iniFile.GetSetValue("ImageEncoding", "ThreadCount", defaultImageEncodingThreadCount));
+
+            const size_t totalFrameBufferCount = static_cast<size_t>(iniFile.GetSetValue("FrameBuffers", "TotalCount", 100));
+
             if (iniFile.IsDirty()) {
                 iniFile.Save();
             }
@@ -218,6 +201,75 @@ int main(int argc, char* argv[])
             numcfc::Logger::LogAndEcho("Starting Vimba system...");
 
             CHECK_VIMBA(vimbaSystem.Startup());
+
+            shared_buffer<ImageEncodingInputItem> imageEncodingInput;
+
+            const auto encodeImages = [&imageEncodingInput, &postOffice, imageFormat, jpegCompressionQuality]() {
+
+                std::vector<uchar> encodingBuffer;
+                cv::Mat image;
+
+                while (imageEncodingInput.is_enabled()) {
+                    ImageEncodingInputItem item;
+                    if (imageEncodingInput.pop_front(item, std::chrono::milliseconds(1000))) {
+                        switch (item.pixelFormat) {
+                            case VmbPixelFormatMono8:
+                            {
+                                image = item.rawData;
+                                break;
+                            }
+                            case VmbPixelFormatBayerRG8:
+                            {
+                                cv::cvtColor(item.rawData, image, cv::COLOR_BayerBG2BGR);
+                                break;
+                            }
+                            default:
+                            {
+                                numcfc::Logger::LogAndEcho("Unsupported pixel format: " + std::to_string(item.pixelFormat), "log_errors");
+                                image = item.rawData;
+                            }
+                        }
+
+                        std::vector<int> encodingParameters;
+                        if (!std::isnan(jpegCompressionQuality)) {
+                            encodingParameters.push_back(cv::IMWRITE_JPEG_QUALITY);
+                            encodingParameters.push_back(static_cast<int>(std::round(jpegCompressionQuality)));
+                        }
+
+                        cv::imencode("." + imageFormat, image, encodingBuffer, encodingParameters);
+
+                        const std::string timestamp = system_clock_time_point_string_conversion::to_string(item.timestamp);
+
+                        const auto getId = [](const std::string& timestamp, size_t counter) {
+                            std::string id = timestamp;
+                            std::replace(id.begin(), id.end(), ':', '.');
+                            std::ostringstream oss;
+                            oss << std::hex << std::setw(16) << std::setfill('0') << counter;
+                            id += "_" + oss.str();
+                            return id;
+                        };
+
+                        claim::AttributeMessage amsg;
+                        amsg.m_type = "Image";
+                        amsg.m_attributes["id"] = getId(timestamp, item.counter);
+                        amsg.m_attributes["timestamp"] = timestamp;
+                        amsg.m_attributes["counter"] = std::to_string(item.counter);
+                        amsg.m_attributes["rows"] = std::to_string(image.rows);
+                        amsg.m_attributes["cols"] = std::to_string(image.cols);
+                        amsg.m_attributes["data"] = std::string(encodingBuffer.begin(), encodingBuffer.end());
+                        amsg.m_attributes["format"] = imageFormat;
+                        if (!std::isnan(jpegCompressionQuality)) {
+                            amsg.m_attributes["jpegQuality"] = std::to_string(jpegCompressionQuality);
+                        }
+                        postOffice.Send(amsg);
+                    }
+                }
+            };
+
+            std::deque<std::thread> imageEncodingThreads;
+            for (size_t i = 0; i < imageEncodingThreadCount; ++i) {
+                imageEncodingThreads.emplace_back(encodeImages);
+            }
 
             try {
                 numcfc::Logger::LogAndEcho("Vimba system started.");
@@ -239,7 +291,6 @@ int main(int argc, char* argv[])
                     numcfc::Logger::LogAndEcho("  " + id + " : " + model);
                 }
 
-                const size_t totalFrameBufferCount = 10;
                 std::unordered_map<std::string, FramePtrVector> frames;
                 std::unordered_map<std::string, IFrameObserverPtr> frameObservers;
 
@@ -280,7 +331,7 @@ int main(int argc, char* argv[])
 
                     numcfc::Logger::LogAndEcho("Camera " + id + ": payload size = " + std::to_string(payloadSize));
 
-                    frameObservers[id].reset(new FrameObserver(camera, postOffice));
+                    frameObservers[id].reset(new FrameObserver(camera, imageEncodingInput));
 
                     frames[id].resize(frameCount);
 
@@ -319,6 +370,12 @@ int main(int argc, char* argv[])
             catch (std::exception& e) {
                 numcfc::Logger::LogAndEcho(e.what(), "log_errors");
                 std::this_thread::sleep_for(std::chrono::seconds(1));
+            }
+
+            imageEncodingInput.halt();
+
+            for (auto& imageEncodingThread : imageEncodingThreads) {
+                imageEncodingThread.join();
             }
 
             CHECK_VIMBA(vimbaSystem.Shutdown());

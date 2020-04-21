@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="AlliedVision.cpp" />
+    <ClCompile Include="..\..\lib\system_clock_time_point_string_conversion\system_clock_time_point_string_conversion.cpp">
+      <Filter>lib</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="lib">
+      <UniqueIdentifier>{bde74d1f-5447-4719-b38d-2c0f3e88c2b3}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

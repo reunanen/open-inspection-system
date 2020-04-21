@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="ImageViewer.cpp" />
+    <ClCompile Include="..\..\lib\system_clock_time_point_string_conversion\system_clock_time_point_string_conversion.cpp">
+      <Filter>lib</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="lib">
+      <UniqueIdentifier>{bd641cfd-4b22-4f9e-abcb-6a59910ca3b6}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>
