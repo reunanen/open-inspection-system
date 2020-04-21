@@ -108,7 +108,7 @@ public:
 
                 imageEncodingInput.push_back(std::move(imageEncodingInputItem));
 
-                LogFramesPerSecond();
+                LogCompleteFramesPerSecond();
             }
             else if (VmbFrameStatusIncomplete == frameStatus) {
                 LogIncompleteFramesPerSecond();
@@ -128,48 +128,62 @@ public:
     }
 
 private:
-    void LogFramesPerSecond() {
-        const auto now = std::chrono::steady_clock::now();
+    static void UpdateFramesPerSecond(std::deque<std::chrono::steady_clock::time_point>& recentTimestamps, const std::chrono::steady_clock::time_point& now) {
         recentTimestamps.push_back(now);
         while (recentTimestamps.size() > 2 && now - recentTimestamps.front() < std::chrono::milliseconds(1000)) {
             recentTimestamps.pop_front();
         }
-        const auto getCameraTemperatureString = [this]() {
-            std::ostringstream logEntry;
-            logEntry << "temperature: " << std::fixed << std::setprecision(2) << GetCameraTemperature();
-            return logEntry.str();
-        };
+    }
+
+    static double GetFramesPerSecond(const std::deque<std::chrono::steady_clock::time_point>& recentTimestamps, const std::chrono::steady_clock::time_point& now) {
         if (recentTimestamps.size() > 1) {
-            if (now >= fpsNextLog) {
-                const double period_s = std::chrono::duration_cast<std::chrono::milliseconds>(now - recentTimestamps.front()).count() / 1000.0;
-                const double fps = (recentTimestamps.size() - 1) / period_s;
-                numcfc::Logger::LogAndEcho("FPS: " + tuc::to_string(fps, 6) + ", " + getCameraTemperatureString(), "log_fps");
-                fpsNextLog += std::chrono::milliseconds(1000);
+            const double period_s = std::chrono::duration_cast<std::chrono::milliseconds>(now - recentTimestamps.front()).count() / 1000.0;
+            const double fps = (recentTimestamps.size() - 1) / period_s;
+            return fps;
+        }
+        else {
+            return std::numeric_limits<double>::quiet_NaN();
+        }
+    }
+
+    void LogCompleteFramesPerSecond() {
+        const auto now = std::chrono::steady_clock::now();
+
+        UpdateFramesPerSecond(recentCompleteFrameTimestamps, now);
+
+        if (recentCompleteFrameTimestamps.size() > 1) {
+            if (now >= fpsCompleteFramesNextLog) {
+                const double fps = GetFramesPerSecond(recentCompleteFrameTimestamps, now);
+                const double temperature = GetCameraTemperature();
+
+                std::ostringstream logEntry;
+                logEntry << "FPS: " << tuc::to_string(fps, 6) << ", temperature: " << std::fixed << std::setprecision(2) << temperature;
+                numcfc::Logger::LogAndEcho(logEntry.str(), "log_fps");
+
+                fpsCompleteFramesNextLog += std::chrono::milliseconds(1000);
             }
         }
         else {
-            numcfc::Logger::LogAndEcho("First frame received, " + getCameraTemperatureString(), "log_fps");
-            fpsNextLog = std::chrono::steady_clock::now() + std::chrono::milliseconds(1000);
+            numcfc::Logger::LogAndEcho("First frame received", "log_fps");
+            fpsCompleteFramesNextLog = now + std::chrono::milliseconds(1000);
         }
     }
 
     void LogIncompleteFramesPerSecond() {
         const auto now = std::chrono::steady_clock::now();
-        recentIncompleteFrameTimestamps.push_back(now);
-        while (recentIncompleteFrameTimestamps.size() > 2 && now - recentIncompleteFrameTimestamps.front() < std::chrono::milliseconds(1000)) {
-            recentIncompleteFrameTimestamps.pop_front();
-        }
+
+        UpdateFramesPerSecond(recentIncompleteFrameTimestamps, now);
+
         if (recentIncompleteFrameTimestamps.size() > 1) {
             if (now >= fpsIncompleteFramesNextLog) {
-                const double period_s = std::chrono::duration_cast<std::chrono::milliseconds>(now - recentIncompleteFrameTimestamps.front()).count() / 1000.0;
-                const double fps = (recentIncompleteFrameTimestamps.size() - 1) / period_s;
+                const double fps = GetFramesPerSecond(recentIncompleteFrameTimestamps, now);
                 numcfc::Logger::LogAndEcho("Incomplete frames per second: " + tuc::to_string(fps, 6), "log_incomplete_frames");
                 fpsIncompleteFramesNextLog += std::chrono::milliseconds(1000);
             }
         }
         else {
             numcfc::Logger::LogAndEcho("First incomplete frame received", "log_incomplete_frames");
-            fpsIncompleteFramesNextLog = std::chrono::steady_clock::now() + std::chrono::milliseconds(1000);
+            fpsIncompleteFramesNextLog = now + std::chrono::milliseconds(1000);
         }
     }
 
@@ -182,9 +196,9 @@ private:
     AVT::VmbAPI::CameraPtr camera;
     shared_buffer<ImageEncodingInputItem>& imageEncodingInput;
     uint64_t counter = 0;
-    std::deque<std::chrono::steady_clock::time_point> recentTimestamps;
+    std::deque<std::chrono::steady_clock::time_point> recentCompleteFrameTimestamps;
     std::deque<std::chrono::steady_clock::time_point> recentIncompleteFrameTimestamps;
-    std::chrono::steady_clock::time_point fpsNextLog;
+    std::chrono::steady_clock::time_point fpsCompleteFramesNextLog;
     std::chrono::steady_clock::time_point fpsIncompleteFramesNextLog;
     AVT::VmbAPI::FeaturePtr temperatureFeature;
 };
