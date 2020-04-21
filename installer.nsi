@@ -68,7 +68,7 @@ Section "Main" Main
 	File "x64\Release\*.dll"
 
 	SetOutPath "$INSTDIR\AlliedVision"
-	File "cameras\alliedvision\AlliedVision.ini"
+	File "cameras\alliedvision\VimbaParametersExample.ini"
 
 	Push "" # Command line arguments
 	Push "$INSTDIR\AlliedVision"
