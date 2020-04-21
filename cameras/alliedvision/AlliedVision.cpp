@@ -69,6 +69,7 @@ public:
         , camera(camera)
         , postOffice(postOffice)
     {
+        CHECK_VIMBA(camera->GetFeatureByName("DeviceTemperature", temperatureFeature));
     }
 
     void FrameReceived(const AVT::VmbAPI::FramePtr frame) {
@@ -156,18 +157,29 @@ private:
         while (recentTimestamps.size() > 2 && now - recentTimestamps.front() < std::chrono::milliseconds(1000)) {
             recentTimestamps.pop_front();
         }
+        const auto getCameraTemperatureString = [this]() {
+            std::ostringstream logEntry;
+            logEntry << "temperature: " << std::fixed << std::setprecision(2) << GetCameraTemperature();
+            return logEntry.str();
+        };
         if (recentTimestamps.size() > 1) {
             if (now >= fpsNextLog) {
                 const double period_s = std::chrono::duration_cast<std::chrono::milliseconds>(now - recentTimestamps.front()).count() / 1000.0;
                 const double fps = (recentTimestamps.size() - 1) / period_s;
-                numcfc::Logger::LogAndEcho("FPS: " + tuc::to_string(fps, 6), "log_fps");
+                numcfc::Logger::LogAndEcho("FPS: " + tuc::to_string(fps, 6) + ", " + getCameraTemperatureString(), "log_fps");
                 fpsNextLog += std::chrono::milliseconds(1000);
             }
         }
         else {
-            numcfc::Logger::LogAndEcho("First frame received", "log_fps");
+            numcfc::Logger::LogAndEcho("First frame received, " + getCameraTemperatureString(), "log_fps");
             fpsNextLog = std::chrono::steady_clock::now() + std::chrono::milliseconds(1000);
         }
+    }
+
+    double GetCameraTemperature() {
+        double temperature = std::numeric_limits<double>::quiet_NaN();
+        CHECK_VIMBA(temperatureFeature->GetValue(temperature));
+        return temperature;
     }
 
     AVT::VmbAPI::CameraPtr camera;
@@ -176,6 +188,7 @@ private:
     uint64_t counter = 0;
     std::deque<std::chrono::steady_clock::time_point> recentTimestamps;
     std::chrono::steady_clock::time_point fpsNextLog;
+    AVT::VmbAPI::FeaturePtr temperatureFeature;
 };
 
 int main(int argc, char* argv[])
@@ -232,10 +245,30 @@ int main(int argc, char* argv[])
 
                 for (auto& camera : cameras) {
                     CHECK_VIMBA(camera->Open(VmbAccessModeFull));
-                
-                    // TODO: set camera parameters
 
                     FeaturePtr feature;
+
+                    const auto vimbaParameters = iniFile.GetKeys("VimbaParameters");
+                    for (const auto& parameterName : vimbaParameters) {
+                        const auto value = iniFile.GetValue("VimbaParameters", parameterName);
+
+                        numcfc::Logger::LogAndEcho(parameterName + " = " + value, "log_camera_parameters");
+
+                        CHECK_VIMBA(camera->GetFeatureByName(parameterName.c_str(), feature));
+
+                        VmbFeatureDataType dataType = VmbFeatureDataUnknown;
+                        CHECK_VIMBA(feature->GetDataType(dataType));
+
+                        switch (dataType) {
+                        case VmbFeatureDataInt:    CHECK_VIMBA(feature->SetValue(std::stoi(value))); break;
+                        case VmbFeatureDataFloat:  CHECK_VIMBA(feature->SetValue(std::stod(value))); break;
+                        case VmbFeatureDataEnum:   CHECK_VIMBA(feature->SetValue(value.c_str())); break;
+                        case VmbFeatureDataString: CHECK_VIMBA(feature->SetValue(value.c_str())); break;
+                        case VmbFeatureDataBool:   CHECK_VIMBA(feature->SetValue(std::stoi(value) != 0)); break;
+                        default: throw std::runtime_error("Unsupported data type: " + std::to_string(dataType) + " (parameter name: " + parameterName + ")");
+                        }
+                    }
+
                     VmbInt64_t payloadSize = -1;
                     CHECK_VIMBA(camera->GetFeatureByName("PayloadSize", feature));
                     CHECK_VIMBA(feature->GetValue(payloadSize));
@@ -270,16 +303,25 @@ int main(int argc, char* argv[])
                 if (iniFile.IsDirty()) {
                     iniFile.Save();
                 }
+                else {
+                    iniFile.Refresh(); // update time-modified information inside the object
+                }
 
                 while (isRunning) {
                     std::this_thread::sleep_for(std::chrono::seconds(1));
+
+                    if (iniFile.Refresh()) {
+                        numcfc::Logger::LogAndEcho("Ini file updated, starting over...");
+                        break;
+                    }
                 }
             }
             catch (std::exception& e) {
                 numcfc::Logger::LogAndEcho(e.what(), "log_errors");
                 std::this_thread::sleep_for(std::chrono::seconds(1));
-                CHECK_VIMBA(vimbaSystem.Shutdown());
             }
+
+            CHECK_VIMBA(vimbaSystem.Shutdown());
         }
         catch (std::exception& e) {
             numcfc::Logger::LogAndEcho(e.what(), "log_errors");
