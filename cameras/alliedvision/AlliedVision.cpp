@@ -104,7 +104,7 @@ public:
 
                 imageEncodingInputItem.pixelFormat = pixelFormat;
                 imageEncodingInputItem.timestamp = timestamp;
-                imageEncodingInputItem.counter = counter++;
+                imageEncodingInputItem.counter = counter;
 
                 imageEncodingInput.push_back(std::move(imageEncodingInputItem));
 
@@ -123,6 +123,11 @@ public:
                 numcfc::Logger::LogAndEcho("Unexpected frame status: " + std::to_string(frameStatus), "log_errors");
             }
         }
+        else {
+            numcfc::Logger::LogAndEcho("Error getting receive status: " + std::to_string(res), "log_errors");
+        }
+
+        ++counter;
 
         camera->QueueFrame(frame);
     }
