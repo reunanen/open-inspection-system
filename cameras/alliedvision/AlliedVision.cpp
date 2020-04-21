@@ -8,6 +8,8 @@
 
 #include "../../lib/system_clock_time_point_string_conversion/system_clock_time_point_string_conversion.h"
 
+#include "../../lib/tuc/include/tuc/to_string.hpp"
+
 #include <opencv2/imgcodecs/imgcodecs.hpp>
 #include <opencv2/imgproc/imgproc.hpp> // required at least for Bayer conversion
 
@@ -155,17 +157,16 @@ private:
             recentTimestamps.pop_front();
         }
         if (recentTimestamps.size() > 1) {
-            if (now - fpsLastLogged > std::chrono::milliseconds(1000)) {
+            if (now >= fpsNextLog) {
                 const double period_s = std::chrono::duration_cast<std::chrono::milliseconds>(now - recentTimestamps.front()).count() / 1000.0;
                 const double fps = (recentTimestamps.size() - 1) / period_s;
-                std::ostringstream logEntry;
-                logEntry << "FPS: " << fps;
-                numcfc::Logger::LogAndEcho(logEntry.str(), "log_fps");
-                fpsLastLogged = now;
+                numcfc::Logger::LogAndEcho("FPS: " + tuc::to_string(fps, 6), "log_fps");
+                fpsNextLog += std::chrono::milliseconds(1000);
             }
         }
         else {
             numcfc::Logger::LogAndEcho("First frame received", "log_fps");
+            fpsNextLog = std::chrono::steady_clock::now() + std::chrono::milliseconds(1000);
         }
     }
 
@@ -174,7 +175,7 @@ private:
     std::vector<uchar> encodingBuffer;
     uint64_t counter = 0;
     std::deque<std::chrono::steady_clock::time_point> recentTimestamps;
-    std::chrono::steady_clock::time_point fpsLastLogged;
+    std::chrono::steady_clock::time_point fpsNextLog;
 };
 
 int main(int argc, char* argv[])

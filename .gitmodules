@@ -10,3 +10,6 @@
 [submodule "lib/system_clock_time_point_string_conversion"]
 	path = lib/system_clock_time_point_string_conversion
 	url = https://github.com/reunanen/system_clock_time_point_string_conversion
+[submodule "lib/tuc"]
+	path = lib/tuc
+	url = https://github.com/reunanen/tuc
