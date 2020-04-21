@@ -60,5 +60,11 @@ int main(int argc, char* argv[])
                 }
             }
         }
+        else {
+            if (27 == cv::waitKey(1)) {
+                std::cout << std::endl << "Esc pressed" << std::endl;
+                break;
+            }
+        }
     }
 }
