@@ -140,9 +140,11 @@ private:
         }
     }
 
-    static double GetFramesPerSecond(const std::deque<std::chrono::steady_clock::time_point>& recentTimestamps, const std::chrono::steady_clock::time_point& now) {
+    static double GetFramesPerSecond(const std::deque<std::chrono::steady_clock::time_point>& recentTimestamps) {
         if (recentTimestamps.size() > 1) {
-            const double period_s = std::chrono::duration_cast<std::chrono::milliseconds>(now - recentTimestamps.front()).count() / 1000.0;
+            const auto period = recentTimestamps.back() - recentTimestamps.front();
+            const auto period_ns = std::chrono::duration_cast<std::chrono::nanoseconds>(period).count();
+            const double period_s = period_ns * 1e-9;
             const double fps = (recentTimestamps.size() - 1) / period_s;
             return fps;
         }
@@ -158,7 +160,7 @@ private:
 
         if (recentCompleteFrameTimestamps.size() > 1) {
             if (now >= fpsCompleteFramesNextLog) {
-                const double fps = GetFramesPerSecond(recentCompleteFrameTimestamps, now);
+                const double fps = GetFramesPerSecond(recentCompleteFrameTimestamps);
                 const double temperature = GetCameraTemperature();
 
                 std::ostringstream logEntry;
@@ -181,7 +183,7 @@ private:
 
         if (recentIncompleteFrameTimestamps.size() > 1) {
             if (now >= fpsIncompleteFramesNextLog) {
-                const double fps = GetFramesPerSecond(recentIncompleteFrameTimestamps, now);
+                const double fps = GetFramesPerSecond(recentIncompleteFrameTimestamps);
                 numcfc::Logger::LogAndEcho("Incomplete frames per second: " + tuc::to_string(fps, 6), "log_incomplete_frames");
                 fpsIncompleteFramesNextLog += std::chrono::milliseconds(1000);
             }
