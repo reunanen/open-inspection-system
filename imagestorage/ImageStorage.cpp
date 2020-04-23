@@ -80,6 +80,22 @@ int main(int argc, char* argv[])
             }
             else if (msg.m_type == "MakePermanent") {
                 const auto& id = amsg.m_attributes["id"];
+                numcfc::Logger::LogAndEcho("Making permanent: " + id);
+                if (storage.MakePermanent(id)) {
+                    numcfc::Logger::LogAndEcho("Data made permanent, id: " + id);
+                }
+                else {
+                    const auto item = storage.GetData(id);
+                    if (!item.isValid) {
+                        numcfc::Logger::LogAndEcho("Data item not found, id: " + id, "log_errors");
+                    }
+                    else if (item.isPermanent) {
+                        numcfc::Logger::LogAndEcho("Data already permanent, id: " + id);
+                    }
+                    else {
+                        numcfc::Logger::LogAndEcho("Unexpected issue making data permanent, id: " + id);
+                    }
+                }
             }
         }
     }
