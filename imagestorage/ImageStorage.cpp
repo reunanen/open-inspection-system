@@ -36,6 +36,20 @@ int main(int argc, char* argv[])
         configuration.directoryStructureResolution = isto::Configuration::DirectoryStructureResolution::Minutes;
     }
 
+#ifdef _WIN32
+    const auto defaultDataDirectory = ".\\data";
+#else
+    const auto defaultDataDirectory = "./data";
+#endif
+
+    configuration.rotatingDirectory = iniFile.GetSetValue("ImageStorage", "DataDirectory", defaultDataDirectory, "The directory where to store the image data");
+    configuration.permanentDirectory = iniFile.GetValue("ImageStorage", "PermanentDataDirectory");
+
+    if (configuration.permanentDirectory.empty()) {
+        // this is the main supported mode of operation: keep all data in the same directory (for a better anno experience)
+        configuration.permanentDirectory = configuration.rotatingDirectory;
+    }
+
     if (iniFile.IsDirty()) {
         iniFile.Save();
     }
