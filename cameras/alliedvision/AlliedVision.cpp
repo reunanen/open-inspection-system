@@ -288,18 +288,18 @@ int main(int argc, char* argv[])
 
                         const std::string timestamp = system_clock_time_point_string_conversion::to_string(item.timestamp);
 
-                        const auto getId = [](const std::string& timestamp, size_t counter) {
+                        const auto getId = [](const std::string& timestamp, size_t counter, const std::string& imageFormat) {
                             std::string id = timestamp;
                             std::replace(id.begin(), id.end(), ':', '.');
                             std::ostringstream oss;
                             oss << std::hex << std::setw(16) << std::setfill('0') << counter;
-                            id += "_" + oss.str();
+                            id += "_" + oss.str() + "." + imageFormat;
                             return id;
                         };
 
                         claim::AttributeMessage amsg;
                         amsg.m_type = "Image";
-                        amsg.m_attributes["id"] = getId(timestamp, item.counter);
+                        amsg.m_attributes["id"] = getId(timestamp, item.counter, imageFormat);
                         amsg.m_attributes["timestamp"] = timestamp;
                         amsg.m_attributes["counter"] = std::to_string(item.counter);
                         amsg.m_attributes["rows"] = std::to_string(image.rows);
