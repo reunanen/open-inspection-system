@@ -85,8 +85,8 @@ Section "Main" Main
 	Push ${NSSM_EXECUTABLE}
 	Call InstallService
 	
-	CreateDirectory "$SMPROGRAMS\Tomaattinen"
-	CreateDirectory "$DESKTOP\Tomaattinen"
+	CreateDirectory "$SMPROGRAMS\OpenInspectionSystem"
+	CreateDirectory "$DESKTOP\OpenInspectionSystem"
 	CreateDirectory "$INSTDIR\ImageViewer"
 
 	SetOutPath "$INSTDIR\ImageViewer"
