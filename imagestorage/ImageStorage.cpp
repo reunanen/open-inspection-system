@@ -58,6 +58,15 @@ int main(int argc, char* argv[])
 
     isto::Storage storage(configuration);
 
+    storage.SetRotatingDataDeletedCallback([&postOffice](const std::string& id) {
+        numcfc::Logger::LogNoEcho("Deleted: " + id, "log_data_rotation");
+
+        claim::AttributeMessage amsg;
+        amsg.m_type = "ImageDeleted";
+        amsg.m_attributes["id"] = id;
+        postOffice.Send(amsg);
+    });
+
     while (true) {
         slaim::Message msg;
         if (postOffice.Receive(msg, 1.0)) {
@@ -77,6 +86,8 @@ int main(int argc, char* argv[])
                         isPermanent
                     );
                     storage.SaveData(dataItem);
+
+                    numcfc::Logger::LogNoEcho("Saved: " + id, "log_data_rotation");
                 }
             }
             else if (msg.m_type == "MakePermanent") {
