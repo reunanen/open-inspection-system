@@ -16,6 +16,7 @@ int main(int argc, char* argv[])
     postOffice.Initialize(iniFile, "ISto");
     postOffice.Subscribe("Image");
     postOffice.Subscribe("MakePermanent");
+    postOffice.Subscribe("MakeRotating");
 
     isto::Configuration configuration;
     configuration.maxRotatingDataToKeepInGiB = iniFile.GetSetValue("ImageStorage", "MaxRotatingDataToKeep_GiB", configuration.maxRotatingDataToKeepInGiB, "Max rotating data to keep (gibibytes)");
@@ -94,6 +95,25 @@ int main(int argc, char* argv[])
                     }
                     else {
                         numcfc::Logger::LogAndEcho("Unexpected issue making data permanent, id: " + id);
+                    }
+                }
+            }
+            else if (msg.m_type == "MakeRotating") {
+                const auto& id = amsg.m_attributes["id"];
+                numcfc::Logger::LogAndEcho("Making rotating: " + id);
+                if (storage.MakeRotating(id)) {
+                    numcfc::Logger::LogAndEcho("Data made rotating, id: " + id);
+                }
+                else {
+                    const auto item = storage.GetData(id);
+                    if (!item.isValid) {
+                        numcfc::Logger::LogAndEcho("Data item not found, id: " + id, "log_errors");
+                    }
+                    else if (!item.isPermanent) {
+                        numcfc::Logger::LogAndEcho("Data already rotating, id: " + id);
+                    }
+                    else {
+                        numcfc::Logger::LogAndEcho("Unexpected issue making data rotating, id: " + id);
                     }
                 }
             }
