@@ -58,13 +58,17 @@ int main(int argc, char* argv[])
 
     isto::Storage storage(configuration);
 
-    storage.SetRotatingDataDeletedCallback([&postOffice](const std::string& id) {
-        numcfc::Logger::LogNoEcho("Deleted: " + id, "log_data_rotation");
+    size_t itemsAdded = 0;
+    size_t itemsDeleted = 0;
+    auto nextDataRotationLogTime = std::chrono::steady_clock::now() + std::chrono::milliseconds(1000);
 
+    storage.SetRotatingDataDeletedCallback([&postOffice, &itemsDeleted](const std::string& id) {
         claim::AttributeMessage amsg;
         amsg.m_type = "ImageDeleted";
         amsg.m_attributes["id"] = id;
         postOffice.Send(amsg);
+
+        ++itemsDeleted;
     });
 
     while (true) {
@@ -87,7 +91,7 @@ int main(int argc, char* argv[])
                     );
                     storage.SaveData(dataItem);
 
-                    numcfc::Logger::LogNoEcho("Saved: " + id, "log_data_rotation");
+                    ++itemsAdded;
                 }
             }
             else if (msg.m_type == "MakePermanent") {
@@ -128,6 +132,20 @@ int main(int argc, char* argv[])
                     }
                 }
             }
+        }
+
+        const auto now = std::chrono::steady_clock::now();
+        if (now >= nextDataRotationLogTime) {
+            const auto formatItemCount = [](size_t count) {
+                if (count == 1) {
+                    return std::string("1 item");
+                }
+                return std::to_string(count) + " items";
+            };
+            numcfc::Logger::LogAndEcho("Saved " + formatItemCount(itemsAdded) + ", deleted " + formatItemCount(itemsDeleted));
+            itemsAdded = 0;
+            itemsDeleted = 0;
+            nextDataRotationLogTime += std::chrono::milliseconds(1000);
         }
     }
 }
