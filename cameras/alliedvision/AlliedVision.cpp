@@ -236,6 +236,8 @@ int main(int argc, char* argv[])
 
             const size_t totalFrameBufferCount = static_cast<size_t>(iniFile.GetSetValue("FrameBuffers", "TotalCount", 100));
 
+            const double noImagesTimeout_s = iniFile.GetSetValue("Operation", "NoImagesTimeout_s", 10.0);
+
             if (iniFile.IsDirty()) {
                 iniFile.Save();
             }
@@ -252,7 +254,10 @@ int main(int argc, char* argv[])
 
             shared_buffer<ImageEncodingInputItem> imageEncodingInput;
 
-            const auto encodeImages = [&imageEncodingInput, &postOffice, imageFormat, jpegCompressionQuality]() {
+            auto imageLastReceived = std::chrono::steady_clock::now();
+            std::mutex imageLastReceivedMutex;
+
+            const auto encodeImages = [&]() {
 
                 std::vector<uchar> encodingBuffer;
                 cv::Mat image;
@@ -310,6 +315,11 @@ int main(int argc, char* argv[])
                             amsg.m_attributes["jpegQuality"] = std::to_string(jpegCompressionQuality);
                         }
                         postOffice.Send(amsg);
+
+                        if (noImagesTimeout_s > 0) {
+                            std::lock_guard<std::mutex> lock(imageLastReceivedMutex);
+                            imageLastReceived = std::chrono::steady_clock::now();
+                        }
                     }
                 }
             };
@@ -412,6 +422,17 @@ int main(int argc, char* argv[])
                     if (iniFile.Refresh()) {
                         numcfc::Logger::LogAndEcho("Ini file updated, starting over...");
                         break;
+                    }
+
+                    if (noImagesTimeout_s > 0) {
+                        std::lock_guard<std::mutex> lock(imageLastReceivedMutex);
+                        const auto durationSinceLatestImageReceived = std::chrono::steady_clock::now() - imageLastReceived;
+                        const auto timeoutDuration = std::chrono::milliseconds(static_cast<int>(std::round(noImagesTimeout_s * 1000)));
+                        if (durationSinceLatestImageReceived > timeoutDuration) {
+                            const auto duration_s = std::chrono::duration_cast<std::chrono::seconds>(durationSinceLatestImageReceived).count();
+                            numcfc::Logger::LogAndEcho("No image received in " + std::to_string(duration_s) + " s, starting over...");
+                            break;
+                        }
                     }
                 }
             }
