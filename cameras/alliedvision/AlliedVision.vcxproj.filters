@@ -5,6 +5,9 @@
     <ClCompile Include="..\..\lib\system_clock_time_point_string_conversion\system_clock_time_point_string_conversion.cpp">
       <Filter>lib</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\lib\fpscalc\fpscalc.cpp">
+      <Filter>lib</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="lib">
