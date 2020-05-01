@@ -82,6 +82,8 @@ public:
         , imageEncodingInput(imageEncodingInput)
     {
         CHECK_VIMBA(camera->GetFeatureByName("DeviceTemperature", temperatureFeature));
+        CHECK_VIMBA(camera->GetFeatureByName("ExposureTimeAbs", exposureTimeFeature));
+        CHECK_VIMBA(camera->GetFeatureByName("Gain", gainFeature));
     }
 
     void FrameReceived(const AVT::VmbAPI::FramePtr frame) {
@@ -148,9 +150,13 @@ private:
         if (fpsCompleteFrames.should_log_fps_now(now)) {
             const double fps = fpsCompleteFrames.fps();
             const double temperature = GetCameraTemperature();
+            const double exposureTime = GetCameraExposureTime();
+            const double gain = GetCameraGain();
 
             std::ostringstream logEntry;
-            logEntry << "FPS: " << tuc::to_string(fps, 6) << ", temperature: " << std::fixed << std::setprecision(2) << temperature;
+            logEntry << "FPS: " << tuc::to_string(fps, 6)
+                << ", temperature: " << std::fixed << std::setprecision(2) << temperature
+                << ", exposure time: " << std::setprecision(0) << exposureTime << ", gain: " << gain;
             numcfc::Logger::LogAndEcho(logEntry.str(), "log_fps");
         }
     }
@@ -171,10 +177,22 @@ private:
         }
     }
 
+    double GetFeature(const AVT::VmbAPI::FeaturePtr& feature) {
+        double value = std::numeric_limits<double>::quiet_NaN();
+        CHECK_VIMBA(feature->GetValue(value));
+        return value;
+    }
+
     double GetCameraTemperature() {
-        double temperature = std::numeric_limits<double>::quiet_NaN();
-        CHECK_VIMBA(temperatureFeature->GetValue(temperature));
-        return temperature;
+        return GetFeature(temperatureFeature);
+    }
+
+    double GetCameraExposureTime() {
+        return GetFeature(exposureTimeFeature);
+    }
+
+    double GetCameraGain() {
+        return GetFeature(gainFeature);
     }
 
     AVT::VmbAPI::CameraPtr camera;
@@ -185,6 +203,8 @@ private:
     bool firstCompleteFrameReceived = false;
     bool firstIncompleteFrameReceived = false;
     AVT::VmbAPI::FeaturePtr temperatureFeature;
+    AVT::VmbAPI::FeaturePtr exposureTimeFeature;
+    AVT::VmbAPI::FeaturePtr gainFeature;
 };
 
 int main(int argc, char* argv[])
