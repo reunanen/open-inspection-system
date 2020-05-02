@@ -92,7 +92,6 @@ xcopy /y VimbaCPP\Bin\Win64\VimbaCPP.dll $(OutDir)</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\lib\fpscalc\fpscalc.cpp" />
     <ClCompile Include="..\..\lib\system_clock_time_point_string_conversion\system_clock_time_point_string_conversion.cpp" />
     <ClCompile Include="AlliedVision.cpp" />
   </ItemGroup>

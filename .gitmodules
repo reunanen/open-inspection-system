@@ -19,6 +19,3 @@
 [submodule "lib/shared_buffer"]
 	path = lib/shared_buffer
 	url = https://github.com/reunanen/shared_buffer
-[submodule "lib/fpscalc"]
-	path = lib/fpscalc
-	url = https://github.com/reunanen/fpscalc

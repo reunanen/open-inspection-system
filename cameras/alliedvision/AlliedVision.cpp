@@ -13,8 +13,6 @@
 
 #include "../../lib/shared_buffer/shared_buffer.h"
 
-#include "../../lib/fpscalc/fpscalc.hpp"
-
 #include <opencv2/imgcodecs/imgcodecs.hpp>
 #include <opencv2/imgproc/imgproc.hpp> // required at least for Bayer conversion
 
@@ -112,10 +110,10 @@ public:
 
                 imageEncodingInput.push_back(std::move(imageEncodingInputItem));
 
-                LogCompleteFramesPerSecond();
+                RegisterCompleteFrame();
             }
             else if (VmbFrameStatusIncomplete == frameStatus) {
-                LogIncompleteFramesPerSecond();
+                RegisterIncompleteFrame();
             }
             else if (VmbFrameStatusTooSmall == frameStatus) {
                 numcfc::Logger::LogAndEcho("Frame buffer too small", "log_errors");
@@ -136,51 +134,12 @@ public:
         camera->QueueFrame(frame);
     }
 
-private:
-    void LogCompleteFramesPerSecond() {
-        const auto now = std::chrono::steady_clock::now();
-
-        if (!firstCompleteFrameReceived) {
-            firstCompleteFrameReceived = true;
-            numcfc::Logger::LogAndEcho("First frame received", "log_fps");
-        }
-
-        fpsCompleteFrames.add_frame(now);
-
-        if (fpsCompleteFrames.should_log_fps_now(now)) {
-            const double fps = fpsCompleteFrames.fps();
-            const double temperature = GetCameraTemperature();
-            const double exposureTime = GetCameraExposureTime();
-            const double gain = GetCameraGain();
-
-            std::ostringstream logEntry;
-            logEntry << "FPS: " << tuc::to_string(fps, 6)
-                << ", temperature: " << std::fixed << std::setprecision(2) << temperature
-                << ", exposure time: " << std::setprecision(0) << exposureTime << ", gain: " << gain;
-            numcfc::Logger::LogAndEcho(logEntry.str(), "log_fps");
-        }
-    }
-
-    void LogIncompleteFramesPerSecond() {
-        const auto now = std::chrono::steady_clock::now();
-
-        if (!firstIncompleteFrameReceived) {
-            firstIncompleteFrameReceived = true;
-            numcfc::Logger::LogAndEcho("First incomplete frame received", "log_incomplete_frames");
-        }
-
-        fpsIncompleteFrames.add_frame(now);
-
-        if (fpsIncompleteFrames.should_log_fps_now(now)) {
-            const double fps = fpsIncompleteFrames.fps();
-            numcfc::Logger::LogAndEcho("Incomplete frames per second: " + tuc::to_string(fps, 6), "log_incomplete_frames");
-        }
-    }
-
-    double GetFeature(const AVT::VmbAPI::FeaturePtr& feature) {
-        double value = std::numeric_limits<double>::quiet_NaN();
-        CHECK_VIMBA(feature->GetValue(value));
-        return value;
+    std::pair<size_t, size_t> GetAndResetFramesReceived() {
+        std::lock_guard<std::mutex> lock(framesReceivedMutex);
+        const auto retVal = std::make_pair(completeFramesReceived, incompleteFramesReceived);
+        completeFramesReceived = 0;
+        incompleteFramesReceived = 0;
+        return retVal;
     }
 
     double GetCameraTemperature() {
@@ -195,17 +154,94 @@ private:
         return GetFeature(gainFeature);
     }
 
+private:
+    void RegisterCompleteFrame() {
+        if (!firstCompleteFrameReceived) {
+            firstCompleteFrameReceived = true;
+            numcfc::Logger::LogAndEcho("First frame received", "log_init");
+        }
+
+        std::lock_guard<std::mutex> lock(framesReceivedMutex);
+        ++completeFramesReceived;
+    }
+
+    void RegisterIncompleteFrame() {
+        if (!firstCompleteFrameReceived) {
+            firstCompleteFrameReceived = true;
+            numcfc::Logger::LogAndEcho("First incomplete frame received", "log_incomplete_frames");
+        }
+
+        std::lock_guard<std::mutex> lock(framesReceivedMutex);
+        ++incompleteFramesReceived;
+    }
+
+    double GetFeature(const AVT::VmbAPI::FeaturePtr& feature) {
+        double value = std::numeric_limits<double>::quiet_NaN();
+        CHECK_VIMBA(feature->GetValue(value));
+        return value;
+    }
+
     AVT::VmbAPI::CameraPtr camera;
     shared_buffer<ImageEncodingInputItem>& imageEncodingInput;
     uint64_t counter = 0;
-    fpscalc fpsCompleteFrames;
-    fpscalc fpsIncompleteFrames;
     bool firstCompleteFrameReceived = false;
     bool firstIncompleteFrameReceived = false;
+    std::mutex framesReceivedMutex;
+    size_t completeFramesReceived = 0;
+    size_t incompleteFramesReceived = 0;
     AVT::VmbAPI::FeaturePtr temperatureFeature;
     AVT::VmbAPI::FeaturePtr exposureTimeFeature;
     AVT::VmbAPI::FeaturePtr gainFeature;
 };
+
+void Log(const std::string& id, FrameObserver* frameObserver, size_t totalCount, bool logTemperature, bool logExposureTime, bool logGain)
+{
+    std::ostringstream logEntry;
+
+    if (totalCount > 1) {
+        logEntry << id << ": ";
+    }
+
+    bool firstItemLogged = false;
+
+    const auto addCommaIfRequired = [&]() {
+        if (firstItemLogged) {
+            logEntry << ", ";
+        }
+        else {
+            firstItemLogged = true;
+        }
+    };
+
+    if (logTemperature) {
+        addCommaIfRequired(); // actually never required - but why not make this look similar to the other items
+        logEntry << "temp: " << std::fixed << std::setprecision(2) << frameObserver->GetCameraTemperature();
+    }
+
+    if (logExposureTime) {
+        addCommaIfRequired();
+        logEntry << "exp t: " << std::fixed << std::setprecision(0) << frameObserver->GetCameraExposureTime();
+    }
+
+    if (logGain) {
+        addCommaIfRequired();
+        logEntry << "gain: " << std::fixed << std::setprecision(0) << frameObserver->GetCameraGain();
+    }
+
+    const auto frames = frameObserver->GetAndResetFramesReceived();
+
+    addCommaIfRequired();
+
+    std::ostringstream oss;
+    oss << "fps: " << frames.first;
+    if (frames.second) {
+        oss << ", incomplete: " << frames.second;
+        numcfc::Logger::LogNoEcho((totalCount > 1 ? (id + ": ") : "") + oss.str(), "log_incomplete_frames");
+    }
+    logEntry << oss.str();
+
+    numcfc::Logger::LogAndEcho(logEntry.str());
+}
 
 int main(int argc, char* argv[])
 {
@@ -235,6 +271,10 @@ int main(int argc, char* argv[])
 
             const double noImagesTimeout_s = iniFile.GetSetValue("Operation", "NoImagesTimeout_s", 10.0);
 
+            const bool logTemperature =  iniFile.GetSetValue("Logging", "LogTemperature",  1.0) > 0.0;
+            const bool logExposureTime = iniFile.GetSetValue("Logging", "LogExposureTime", 1.0) > 0.0;
+            const bool logGain =         iniFile.GetSetValue("Logging", "LogGain",         1.0) > 0.0;
+
             if (iniFile.IsDirty()) {
                 iniFile.Save();
             }
@@ -245,7 +285,7 @@ int main(int argc, char* argv[])
 
             LogVimbaVersion(vimbaSystem);
 
-            numcfc::Logger::LogAndEcho("Starting Vimba system...");
+            numcfc::Logger::LogAndEcho("Starting Vimba system...", "log_init");
 
             CHECK_VIMBA(vimbaSystem.Startup());
 
@@ -327,7 +367,7 @@ int main(int argc, char* argv[])
             }
 
             try {
-                numcfc::Logger::LogAndEcho("Vimba system started.");
+                numcfc::Logger::LogAndEcho("Vimba system started.", "log_init");
 
                 CameraPtrVector cameras;
 
@@ -337,17 +377,17 @@ int main(int argc, char* argv[])
                     throw std::runtime_error("No cameras found");
                 }
 
-                numcfc::Logger::LogAndEcho("Found " + std::to_string(cameras.size()) + " camera" + (cameras.size() == 1 ? "" : "s") + ":");
+                numcfc::Logger::LogAndEcho("Found " + std::to_string(cameras.size()) + " camera" + (cameras.size() == 1 ? "" : "s") + ":", "log_init");
 
                 for (const auto& camera : cameras) {
                     std::string model, id;
                     CHECK_VIMBA(camera->GetModel(model));
                     CHECK_VIMBA(camera->GetID(id));
-                    numcfc::Logger::LogAndEcho("  " + id + " : " + model);
+                    numcfc::Logger::LogAndEcho("  " + id + " : " + model, "log_init");
                 }
 
                 std::unordered_map<std::string, FramePtrVector> frames;
-                std::unordered_map<std::string, IFrameObserverPtr> frameObservers;
+                std::unordered_map<std::string, std::pair<FrameObserver*, IFrameObserverPtr>> frameObservers;
 
                 for (auto& camera : cameras) {
                     CHECK_VIMBA(camera->Open(VmbAccessModeFull));
@@ -384,15 +424,16 @@ int main(int argc, char* argv[])
                     std::string id;
                     CHECK_VIMBA(camera->GetID(id));
 
-                    numcfc::Logger::LogAndEcho("Camera " + id + ": payload size = " + std::to_string(payloadSize));
+                    numcfc::Logger::LogAndEcho("Camera " + id + ": payload size = " + std::to_string(payloadSize), "log_init");
 
-                    frameObservers[id].reset(new FrameObserver(camera, imageEncodingInput));
-
+                    frameObservers[id].first = new FrameObserver(camera, imageEncodingInput);
+                    frameObservers[id].second.reset(frameObservers[id].first);
+ 
                     frames[id].resize(frameCount);
 
                     for (auto& frame : frames[id]) {
                         frame.reset(new Frame(payloadSize));
-                        CHECK_VIMBA(frame->RegisterObserver(frameObservers[id]));
+                        CHECK_VIMBA(frame->RegisterObserver(frameObservers[id].second));
                         CHECK_VIMBA(camera->AnnounceFrame(frame));
                     }
 
@@ -413,12 +454,21 @@ int main(int argc, char* argv[])
                     iniFile.Refresh(); // update time-modified information inside the object
                 }
 
+                auto sleepUntil = std::chrono::ceil<std::chrono::seconds>(std::chrono::steady_clock::now());
+
                 while (isRunning) {
-                    std::this_thread::sleep_for(std::chrono::seconds(1));
+                    std::this_thread::sleep_until(sleepUntil);
+                    sleepUntil += std::chrono::seconds(1);
 
                     if (iniFile.Refresh()) {
-                        numcfc::Logger::LogAndEcho("Ini file updated, starting over...");
+                        numcfc::Logger::LogAndEcho("Ini file updated, starting over...", "log_init");
                         break;
+                    }
+
+                    for (auto& i : frameObservers) {
+                        const std::string& id = i.first;
+                        auto* frameObserver = i.second.first;
+                        Log(id, frameObserver, frameObservers.size(), logTemperature, logExposureTime, logGain);
                     }
 
                     if (noImagesTimeout_s > 0) {
@@ -427,7 +477,7 @@ int main(int argc, char* argv[])
                         const auto timeoutDuration = std::chrono::milliseconds(static_cast<int>(std::round(noImagesTimeout_s * 1000)));
                         if (durationSinceLatestImageReceived > timeoutDuration) {
                             const auto duration_s = std::chrono::duration_cast<std::chrono::seconds>(durationSinceLatestImageReceived).count();
-                            numcfc::Logger::LogAndEcho("No image received in " + std::to_string(duration_s) + " s, starting over...");
+                            numcfc::Logger::LogAndEcho("No image received in " + std::to_string(duration_s) + " s, starting over...", "log_init");
                             break;
                         }
                     }
