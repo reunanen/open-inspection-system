@@ -19,6 +19,7 @@
 #include <unordered_map>
 #include <iomanip>
 #include <deque>
+#include <atomic>
 
 #define CHECK_VIMBA(call) {                                                                \
     const auto result = call;                                                              \
@@ -135,11 +136,10 @@ public:
     }
 
     std::pair<size_t, size_t> GetAndResetFramesReceived() {
-        std::lock_guard<std::mutex> lock(framesReceivedMutex);
-        const auto retVal = std::make_pair(completeFramesReceived, incompleteFramesReceived);
-        completeFramesReceived = 0;
-        incompleteFramesReceived = 0;
-        return retVal;
+        return std::make_pair(
+            completeFramesReceived.exchange(0),
+            incompleteFramesReceived.exchange(0)
+        );
     }
 
     double GetCameraTemperature() {
@@ -161,7 +161,6 @@ private:
             numcfc::Logger::LogAndEcho("First frame received", "log_init");
         }
 
-        std::lock_guard<std::mutex> lock(framesReceivedMutex);
         ++completeFramesReceived;
     }
 
@@ -171,7 +170,6 @@ private:
             numcfc::Logger::LogAndEcho("First incomplete frame received", "log_incomplete_frames");
         }
 
-        std::lock_guard<std::mutex> lock(framesReceivedMutex);
         ++incompleteFramesReceived;
     }
 
@@ -186,9 +184,8 @@ private:
     uint64_t counter = 0;
     bool firstCompleteFrameReceived = false;
     bool firstIncompleteFrameReceived = false;
-    std::mutex framesReceivedMutex;
-    size_t completeFramesReceived = 0;
-    size_t incompleteFramesReceived = 0;
+    std::atomic<uintmax_t> completeFramesReceived = 0;
+    std::atomic<uintmax_t> incompleteFramesReceived = 0;
     AVT::VmbAPI::FeaturePtr temperatureFeature;
     AVT::VmbAPI::FeaturePtr exposureTimeFeature;
     AVT::VmbAPI::FeaturePtr gainFeature;
