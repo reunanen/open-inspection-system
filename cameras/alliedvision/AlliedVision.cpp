@@ -451,7 +451,7 @@ int main(int argc, char* argv[])
                     iniFile.Refresh(); // update time-modified information inside the object
                 }
 
-                auto sleepUntil = std::chrono::ceil<std::chrono::seconds>(std::chrono::steady_clock::now());
+                auto sleepUntil = std::chrono::steady_clock::now();
 
                 while (isRunning) {
                     std::this_thread::sleep_until(sleepUntil);
