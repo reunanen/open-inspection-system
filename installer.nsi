@@ -56,7 +56,7 @@ Section "Main" Main
 
 	WriteRegStr HKLM "Software\Tomaattinen\OpenInspectionSystem" "InstallDir" "$INSTDIR"
 	WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\OpenInspectionSystem" "DisplayName" "OpenInspectionSystem"
-	WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\OpenInspectionSystem" "UninstallString" "$\"$INSTDIR\OpenInspectionSystem-uninstaller.exe$\""
+	WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\OpenInspectionSystem" "UninstallString" "$\"$INSTDIR\ois-uninstaller.exe$\""
 	WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\OpenInspectionSystem" "Publisher" "Tomaattinen"
 	WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\OpenInspectionSystem" "DisplayVersion" "${VERSION}"
 
