@@ -4,7 +4,7 @@ init:
 install:
   - git submodule update --init --recursive
 build_script:
-  - msbuild /p:Configuration=Release /p:Platform=x64
+  - msbuild open-inspection-system.sln /p:Configuration=Release /p:Platform=x64
   - makensis installer.nsi
 artifacts:
   - path: ois-installer-v*.exe
