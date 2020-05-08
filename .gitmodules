@@ -19,3 +19,15 @@
 [submodule "lib/shared_buffer"]
 	path = lib/shared_buffer
 	url = https://github.com/reunanen/shared_buffer
+[submodule "lib/annonet/annonet_instance_segmentation"]
+	path = lib/annonet/annonet_instance_segmentation
+	url = https://github.com/reunanen/annonet
+[submodule "lib/annonet/annonet_stuff"]
+	path = lib/annonet/annonet_stuff
+	url = https://github.com/reunanen/annonet
+[submodule "lib/annonet/annonet_things"]
+	path = lib/annonet/annonet_things
+	url = https://github.com/reunanen/annonet
+[submodule "lib/nlohmann_json"]
+	path = lib/nlohmann_json
+	url = https://github.com/nlohmann/json

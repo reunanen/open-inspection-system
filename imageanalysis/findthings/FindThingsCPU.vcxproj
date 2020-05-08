@@ -1,0 +1,560 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="DebugGrayscaleInput|x64">
+      <Configuration>DebugGrayscaleInput</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="ReleaseGrayscaleInput|x64">
+      <Configuration>ReleaseGrayscaleInput</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{56072719-68FD-4A36-AFD0-D82968D9F37D}</ProjectGuid>
+    <WindowsTargetPlatformVersion>10.0.16299.0</WindowsTargetPlatformVersion>
+    <Keyword>Win32Proj</Keyword>
+    <Platform>x64</Platform>
+    <ProjectName>FindThingsCPU</ProjectName>
+    <VCProjectUpgraderObjectName>NoUpgrade</VCProjectUpgraderObjectName>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <CharacterSet>NotSet</CharacterSet>
+    <PlatformToolset>v141</PlatformToolset>
+    <UseIntelMKL>Parallel</UseIntelMKL>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='DebugGrayscaleInput|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <CharacterSet>NotSet</CharacterSet>
+    <PlatformToolset>v141</PlatformToolset>
+    <UseIntelMKL>Parallel</UseIntelMKL>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <CharacterSet>NotSet</CharacterSet>
+    <PlatformToolset>v141</PlatformToolset>
+    <UseIntelMKL>Parallel</UseIntelMKL>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseGrayscaleInput|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <CharacterSet>NotSet</CharacterSet>
+    <PlatformToolset>v141</PlatformToolset>
+    <UseIntelMKL>Parallel</UseIntelMKL>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>10.0.20506.1</_ProjectFileVersion>
+    <TargetExt Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.exe</TargetExt>
+    <TargetExt Condition="'$(Configuration)|$(Platform)'=='DebugGrayscaleInput|x64'">.exe</TargetExt>
+    <TargetExt Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.exe</TargetExt>
+    <TargetExt Condition="'$(Configuration)|$(Platform)'=='ReleaseGrayscaleInput|x64'">.exe</TargetExt>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <IncludePath>C:\Program Files (x86)\IntelSWTools\compilers_and_libraries_2017.2.187\windows\mkl\lib\intel64_win;../../lib/opencv-build-vs/include;../../lib/Numcore_messaging_library;../../lib/annonet/annonet_things/dlib;../../lib/annonet/annonet_things/rapidjson/include;$(VC_IncludePath);$(WindowsSDK_IncludePath)</IncludePath>
+    <LibraryPath>C:\Program Files (x86)\IntelSWTools\compilers_and_libraries_2017.2.187\windows\compiler\lib\intel64_win;C:\Program Files (x86)\IntelSWTools\compilers_and_libraries_2017.2.187\windows\mkl\lib\intel64_win;opencv-binaries-vs/$(Platform)/lib;$(VC_LibraryPath_x64);$(WindowsSDK_LibraryPath_x64);$(NETFXKitsDir)Lib\um\x64</LibraryPath>
+    <IntDir>$(Platform)\$(Configuration)\$(ProjectName)\</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='DebugGrayscaleInput|x64'">
+    <IncludePath>C:\Program Files (x86)\IntelSWTools\compilers_and_libraries_2017.2.187\windows\mkl\lib\intel64_win;../../lib/opencv-build-vs/include;../../lib/Numcore_messaging_library;../../lib/annonet/annonet_things/dlib;../../lib/annonet/annonet_things/rapidjson/include;$(VC_IncludePath);$(WindowsSDK_IncludePath)</IncludePath>
+    <LibraryPath>C:\Program Files (x86)\IntelSWTools\compilers_and_libraries_2017.2.187\windows\compiler\lib\intel64_win;C:\Program Files (x86)\IntelSWTools\compilers_and_libraries_2017.2.187\windows\mkl\lib\intel64_win;opencv-binaries-vs/$(Platform)/lib;$(VC_LibraryPath_x64);$(WindowsSDK_LibraryPath_x64);$(NETFXKitsDir)Lib\um\x64</LibraryPath>
+    <IntDir>$(Platform)\$(Configuration)\$(ProjectName)\</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <IncludePath>C:\Program Files (x86)\IntelSWTools\compilers_and_libraries_2017.2.187\windows\mkl\lib\intel64_win;../../lib/opencv-build-vs/include;../../lib/Numcore_messaging_library;../../lib/annonet/annonet_things/dlib;../../lib/annonet/annonet_things/rapidjson/include;$(VC_IncludePath);$(WindowsSDK_IncludePath)</IncludePath>
+    <LibraryPath>C:\Program Files (x86)\IntelSWTools\compilers_and_libraries_2017.2.187\windows\compiler\lib\intel64_win;C:\Program Files (x86)\IntelSWTools\compilers_and_libraries_2017.2.187\windows\mkl\lib\intel64_win;opencv-binaries-vs/$(Platform)/lib;$(VC_LibraryPath_x64);$(WindowsSDK_LibraryPath_x64);$(NETFXKitsDir)Lib\um\x64</LibraryPath>
+    <IntDir>$(Platform)\$(Configuration)\$(ProjectName)\</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseGrayscaleInput|x64'">
+    <IncludePath>C:\Program Files (x86)\IntelSWTools\compilers_and_libraries_2017.2.187\windows\mkl\lib\intel64_win;../../lib/opencv-build-vs/include;../../lib/Numcore_messaging_library;../../lib/annonet/annonet_things/dlib;../../lib/annonet/annonet_things/rapidjson/include;$(VC_IncludePath);$(WindowsSDK_IncludePath)</IncludePath>
+    <LibraryPath>C:\Program Files (x86)\IntelSWTools\compilers_and_libraries_2017.2.187\windows\compiler\lib\intel64_win;C:\Program Files (x86)\IntelSWTools\compilers_and_libraries_2017.2.187\windows\mkl\lib\intel64_win;opencv-binaries-vs/$(Platform)/lib;$(VC_LibraryPath_x64);$(WindowsSDK_LibraryPath_x64);$(NETFXKitsDir)Lib\um\x64</LibraryPath>
+    <IntDir>$(Platform)\$(Configuration)\$(ProjectName)\</IntDir>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <AdditionalOptions>%(AdditionalOptions) /bigobj</AdditionalOptions>
+      <CompileAs>CompileAsCpp</CompileAs>
+      <EnableEnhancedInstructionSet>AdvancedVectorExtensions</EnableEnhancedInstructionSet>
+      <ExceptionHandling>
+      </ExceptionHandling>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <PreprocessorDefinitions>DLIB_JPEG_SUPPORT;DLIB_USE_BLAS;DLIB_USE_LAPACK;DLIB_HAVE_SSE2;DLIB_HAVE_SSE3;DLIB_HAVE_SSE41;DLIB_HAVE_AVX;DLIB_HAVE_AVX2;DLIB_PNG_SUPPORT;DLIB__CMAKE_GENERATED_A_CONFIG_H_FILE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <DisableSpecificWarnings>4530;4577</DisableSpecificWarnings>
+      <Optimization>Disabled</Optimization>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>WIN32;_DEBUG;DLIB_JPEG_SUPPORT;DLIB_USE_BLAS;DLIB_USE_LAPACK;DLIB_PNG_SUPPORT;CMAKE_INTDIR=\"Debug\";%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Midl>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+    <Link>
+      <AdditionalDependencies>$(OutDir)opencv.lib;$(OutDir)Numcore_messaging_library.lib</AdditionalDependencies>
+      <SubSystem>Console</SubSystem>
+      <Version>
+      </Version>
+    </Link>
+    <ProjectReference />
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='DebugGrayscaleInput|x64'">
+    <ClCompile>
+      <AdditionalOptions>%(AdditionalOptions) /bigobj</AdditionalOptions>
+      <CompileAs>CompileAsCpp</CompileAs>
+      <EnableEnhancedInstructionSet>AdvancedVectorExtensions</EnableEnhancedInstructionSet>
+      <ExceptionHandling>
+      </ExceptionHandling>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <PreprocessorDefinitions>DLIB_DNN_PIMPL_WRAPPER_GRAYSCALE_INPUT;DLIB_JPEG_SUPPORT;DLIB_USE_BLAS;DLIB_USE_LAPACK;DLIB_HAVE_SSE2;DLIB_HAVE_SSE3;DLIB_HAVE_SSE41;DLIB_HAVE_AVX;DLIB_HAVE_AVX2;DLIB_PNG_SUPPORT;DLIB__CMAKE_GENERATED_A_CONFIG_H_FILE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <DisableSpecificWarnings>4530;4577</DisableSpecificWarnings>
+      <Optimization>Disabled</Optimization>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>WIN32;_DEBUG;DLIB_JPEG_SUPPORT;DLIB_USE_BLAS;DLIB_USE_LAPACK;DLIB_PNG_SUPPORT;CMAKE_INTDIR=\"Debug\";%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Midl>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+    <Link>
+      <AdditionalDependencies>$(OutDir)opencv.lib;$(OutDir)Numcore_messaging_library.lib</AdditionalDependencies>
+      <SubSystem>Console</SubSystem>
+      <Version>
+      </Version>
+    </Link>
+    <ProjectReference />
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <AdditionalOptions>%(AdditionalOptions) /bigobj</AdditionalOptions>
+      <CompileAs>CompileAsCpp</CompileAs>
+      <EnableEnhancedInstructionSet>AdvancedVectorExtensions</EnableEnhancedInstructionSet>
+      <ExceptionHandling>
+      </ExceptionHandling>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <PreprocessorDefinitions>DLIB_JPEG_SUPPORT;DLIB_USE_BLAS;DLIB_USE_LAPACK;DLIB_HAVE_SSE2;DLIB_HAVE_SSE3;DLIB_HAVE_SSE41;DLIB_HAVE_AVX;DLIB_HAVE_AVX2;DLIB_PNG_SUPPORT;DLIB__CMAKE_GENERATED_A_CONFIG_H_FILE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <DebugInformationFormat>
+      </DebugInformationFormat>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <DisableSpecificWarnings>4530;4577</DisableSpecificWarnings>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>WIN32;DLIB_JPEG_SUPPORT;DLIB_USE_BLAS;DLIB_USE_LAPACK;DLIB_PNG_SUPPORT;CMAKE_INTDIR=\"Release\";%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Midl>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+    <Link>
+      <AdditionalDependencies>$(OutDir)opencv.lib;$(OutDir)Numcore_messaging_library.lib</AdditionalDependencies>
+      <SubSystem>Console</SubSystem>
+      <Version>
+      </Version>
+    </Link>
+    <ProjectReference />
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseGrayscaleInput|x64'">
+    <ClCompile>
+      <AdditionalOptions>%(AdditionalOptions) /bigobj</AdditionalOptions>
+      <CompileAs>CompileAsCpp</CompileAs>
+      <EnableEnhancedInstructionSet>AdvancedVectorExtensions</EnableEnhancedInstructionSet>
+      <ExceptionHandling>
+      </ExceptionHandling>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <PreprocessorDefinitions>DLIB_DNN_PIMPL_WRAPPER_GRAYSCALE_INPUT;DLIB_JPEG_SUPPORT;DLIB_USE_BLAS;DLIB_USE_LAPACK;DLIB_HAVE_SSE2;DLIB_HAVE_SSE3;DLIB_HAVE_SSE41;DLIB_HAVE_AVX;DLIB_HAVE_AVX2;DLIB_PNG_SUPPORT;DLIB__CMAKE_GENERATED_A_CONFIG_H_FILE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <DebugInformationFormat>
+      </DebugInformationFormat>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <DisableSpecificWarnings>4530;4577</DisableSpecificWarnings>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>WIN32;DLIB_JPEG_SUPPORT;DLIB_USE_BLAS;DLIB_USE_LAPACK;DLIB_PNG_SUPPORT;CMAKE_INTDIR=\"Release\";%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Midl>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+    <Link>
+      <AdditionalDependencies>$(OutDir)opencv.lib;$(OutDir)Numcore_messaging_library.lib</AdditionalDependencies>
+      <SubSystem>Console</SubSystem>
+      <Version>
+      </Version>
+    </Link>
+    <ProjectReference />
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\lib\annonet\annonet_things\annonet.cpp" />
+    <ClCompile Include="..\..\lib\annonet\annonet_things\annonet_infer.cpp" />
+    <ClCompile Include="..\..\lib\annonet\annonet_things\annonet_parse_anno_classes.cpp" />
+    <ClCompile Include="..\..\lib\annonet\annonet_things\cpp-read-file-in-memory\read-file-in-memory.cpp" />
+    <ClCompile Include="..\..\lib\annonet\annonet_things\dlib-dnn-pimpl-wrapper\NetDimensions.cpp" />
+    <ClCompile Include="..\..\lib\annonet\annonet_things\dlib-dnn-pimpl-wrapper\NetPimpl.cpp" />
+    <ClCompile Include="..\..\lib\annonet\annonet_things\tiling\tiling.cpp" />
+    <ClCompile Include="..\..\lib\annonet\annonet_things\dlib\dlib\dir_nav\dir_nav_extensions.cpp" />
+    <ClCompile Include="..\..\lib\annonet\annonet_things\dlib\dlib\dir_nav\dir_nav_kernel_1.cpp" />
+    <ClCompile Include="..\..\lib\annonet\annonet_things\dlib\dlib\dir_nav\dir_nav_kernel_2.cpp" />
+    <ClCompile Include="..\..\lib\annonet\annonet_things\dlib\dlib\cuda\cpu_dlib.cpp" />
+    <ClCompile Include="..\..\lib\annonet\annonet_things\dlib\dlib\cuda\tensor_tools.cpp" />
+    <ClCompile Include="..\..\lib\annonet\annonet_things\dlib\dlib\entropy_decoder\entropy_decoder_kernel_2.cpp" />
+    <ClCompile Include="..\..\lib\annonet\annonet_things\dlib\dlib\external\libjpeg\jcapimin.cpp" />
+    <ClCompile Include="..\..\lib\annonet\annonet_things\dlib\dlib\external\libjpeg\jcapistd.cpp" />
+    <ClCompile Include="..\..\lib\annonet\annonet_things\dlib\dlib\external\libjpeg\jccoefct.cpp" />
+    <ClCompile Include="..\..\lib\annonet\annonet_things\dlib\dlib\external\libjpeg\jccolor.cpp" />
+    <ClCompile Include="..\..\lib\annonet\annonet_things\dlib\dlib\external\libjpeg\jcdctmgr.cpp" />
+    <ClCompile Include="..\..\lib\annonet\annonet_things\dlib\dlib\external\libjpeg\jchuff.cpp" />
+    <ClCompile Include="..\..\lib\annonet\annonet_things\dlib\dlib\external\libjpeg\jcinit.cpp" />
+    <ClCompile Include="..\..\lib\annonet\annonet_things\dlib\dlib\external\libjpeg\jcmainct.cpp" />
+    <ClCompile Include="..\..\lib\annonet\annonet_things\dlib\dlib\external\libjpeg\jcmarker.cpp" />
+    <ClCompile Include="..\..\lib\annonet\annonet_things\dlib\dlib\external\libjpeg\jcmaster.cpp" />
+    <ClCompile Include="..\..\lib\annonet\annonet_things\dlib\dlib\external\libjpeg\jcomapi.cpp" />
+    <ClCompile Include="..\..\lib\annonet\annonet_things\dlib\dlib\external\libjpeg\jcparam.cpp" />
+    <ClCompile Include="..\..\lib\annonet\annonet_things\dlib\dlib\external\libjpeg\jcphuff.cpp" />
+    <ClCompile Include="..\..\lib\annonet\annonet_things\dlib\dlib\external\libjpeg\jcprepct.cpp" />
+    <ClCompile Include="..\..\lib\annonet\annonet_things\dlib\dlib\external\libjpeg\jcsample.cpp" />
+    <ClCompile Include="..\..\lib\annonet\annonet_things\dlib\dlib\external\libjpeg\jdapimin.cpp" />
+    <ClCompile Include="..\..\lib\annonet\annonet_things\dlib\dlib\external\libjpeg\jdapistd.cpp" />
+    <ClCompile Include="..\..\lib\annonet\annonet_things\dlib\dlib\external\libjpeg\jdatadst.cpp" />
+    <ClCompile Include="..\..\lib\annonet\annonet_things\dlib\dlib\external\libjpeg\jdatasrc.cpp" />
+    <ClCompile Include="..\..\lib\annonet\annonet_things\dlib\dlib\external\libjpeg\jdcoefct.cpp" />
+    <ClCompile Include="..\..\lib\annonet\annonet_things\dlib\dlib\external\libjpeg\jdcolor.cpp" />
+    <ClCompile Include="..\..\lib\annonet\annonet_things\dlib\dlib\external\libjpeg\jddctmgr.cpp" />
+    <ClCompile Include="..\..\lib\annonet\annonet_things\dlib\dlib\external\libjpeg\jdhuff.cpp" />
+    <ClCompile Include="..\..\lib\annonet\annonet_things\dlib\dlib\external\libjpeg\jdinput.cpp" />
+    <ClCompile Include="..\..\lib\annonet\annonet_things\dlib\dlib\external\libjpeg\jdmainct.cpp" />
+    <ClCompile Include="..\..\lib\annonet\annonet_things\dlib\dlib\external\libjpeg\jdmarker.cpp" />
+    <ClCompile Include="..\..\lib\annonet\annonet_things\dlib\dlib\external\libjpeg\jdmaster.cpp" />
+    <ClCompile Include="..\..\lib\annonet\annonet_things\dlib\dlib\external\libjpeg\jdmerge.cpp" />
+    <ClCompile Include="..\..\lib\annonet\annonet_things\dlib\dlib\external\libjpeg\jdphuff.cpp" />
+    <ClCompile Include="..\..\lib\annonet\annonet_things\dlib\dlib\external\libjpeg\jdpostct.cpp" />
+    <ClCompile Include="..\..\lib\annonet\annonet_things\dlib\dlib\external\libjpeg\jdsample.cpp" />
+    <ClCompile Include="..\..\lib\annonet\annonet_things\dlib\dlib\external\libjpeg\jerror.cpp" />
+    <ClCompile Include="..\..\lib\annonet\annonet_things\dlib\dlib\external\libjpeg\jfdctflt.cpp" />
+    <ClCompile Include="..\..\lib\annonet\annonet_things\dlib\dlib\external\libjpeg\jfdctfst.cpp" />
+    <ClCompile Include="..\..\lib\annonet\annonet_things\dlib\dlib\external\libjpeg\jfdctint.cpp" />
+    <ClCompile Include="..\..\lib\annonet\annonet_things\dlib\dlib\external\libjpeg\jidctflt.cpp" />
+    <ClCompile Include="..\..\lib\annonet\annonet_things\dlib\dlib\external\libjpeg\jidctfst.cpp" />
+    <ClCompile Include="..\..\lib\annonet\annonet_things\dlib\dlib\external\libjpeg\jidctint.cpp" />
+    <ClCompile Include="..\..\lib\annonet\annonet_things\dlib\dlib\external\libjpeg\jidctred.cpp" />
+    <ClCompile Include="..\..\lib\annonet\annonet_things\dlib\dlib\external\libjpeg\jmemmgr.cpp" />
+    <ClCompile Include="..\..\lib\annonet\annonet_things\dlib\dlib\external\libjpeg\jmemnobs.cpp" />
+    <ClCompile Include="..\..\lib\annonet\annonet_things\dlib\dlib\external\libjpeg\jquant1.cpp" />
+    <ClCompile Include="..\..\lib\annonet\annonet_things\dlib\dlib\external\libjpeg\jquant2.cpp" />
+    <ClCompile Include="..\..\lib\annonet\annonet_things\dlib\dlib\external\libjpeg\jutils.cpp" />
+    <ClCompile Include="..\..\lib\annonet\annonet_things\dlib\dlib\external\libpng\png.c">
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ProjectDir)..\..\lib\annonet\annonet_things\dlib\dlib\external\zlib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='DebugGrayscaleInput|x64'">$(ProjectDir)..\..\lib\annonet\annonet_things\dlib\dlib\external\zlib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ProjectDir)..\..\lib\annonet\annonet_things\dlib\dlib\external\zlib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='ReleaseGrayscaleInput|x64'">$(ProjectDir)..\..\lib\annonet\annonet_things\dlib\dlib\external\zlib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='DebugGrayscaleInput|x64'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='ReleaseGrayscaleInput|x64'">CompileAsC</CompileAs>
+    </ClCompile>
+    <ClCompile Include="..\..\lib\annonet\annonet_things\dlib\dlib\external\libpng\pngerror.c">
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ProjectDir)..\..\lib\annonet\annonet_things\dlib\dlib\external\zlib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='DebugGrayscaleInput|x64'">$(ProjectDir)..\..\lib\annonet\annonet_things\dlib\dlib\external\zlib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ProjectDir)..\..\lib\annonet\annonet_things\dlib\dlib\external\zlib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='ReleaseGrayscaleInput|x64'">$(ProjectDir)..\..\lib\annonet\annonet_things\dlib\dlib\external\zlib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='DebugGrayscaleInput|x64'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='ReleaseGrayscaleInput|x64'">CompileAsC</CompileAs>
+    </ClCompile>
+    <ClCompile Include="..\..\lib\annonet\annonet_things\dlib\dlib\external\libpng\pngget.c">
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ProjectDir)..\..\lib\annonet\annonet_things\dlib\dlib\external\zlib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='DebugGrayscaleInput|x64'">$(ProjectDir)..\..\lib\annonet\annonet_things\dlib\dlib\external\zlib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ProjectDir)..\..\lib\annonet\annonet_things\dlib\dlib\external\zlib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='ReleaseGrayscaleInput|x64'">$(ProjectDir)..\..\lib\annonet\annonet_things\dlib\dlib\external\zlib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='DebugGrayscaleInput|x64'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='ReleaseGrayscaleInput|x64'">CompileAsC</CompileAs>
+    </ClCompile>
+    <ClCompile Include="..\..\lib\annonet\annonet_things\dlib\dlib\external\libpng\pngmem.c">
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ProjectDir)..\..\lib\annonet\annonet_things\dlib\dlib\external\zlib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='DebugGrayscaleInput|x64'">$(ProjectDir)..\..\lib\annonet\annonet_things\dlib\dlib\external\zlib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ProjectDir)..\..\lib\annonet\annonet_things\dlib\dlib\external\zlib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='ReleaseGrayscaleInput|x64'">$(ProjectDir)..\..\lib\annonet\annonet_things\dlib\dlib\external\zlib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='DebugGrayscaleInput|x64'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='ReleaseGrayscaleInput|x64'">CompileAsC</CompileAs>
+    </ClCompile>
+    <ClCompile Include="..\..\lib\annonet\annonet_things\dlib\dlib\external\libpng\pngpread.c">
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ProjectDir)..\..\lib\annonet\annonet_things\dlib\dlib\external\zlib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='DebugGrayscaleInput|x64'">$(ProjectDir)..\..\lib\annonet\annonet_things\dlib\dlib\external\zlib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ProjectDir)..\..\lib\annonet\annonet_things\dlib\dlib\external\zlib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='ReleaseGrayscaleInput|x64'">$(ProjectDir)..\..\lib\annonet\annonet_things\dlib\dlib\external\zlib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='DebugGrayscaleInput|x64'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='ReleaseGrayscaleInput|x64'">CompileAsC</CompileAs>
+    </ClCompile>
+    <ClCompile Include="..\..\lib\annonet\annonet_things\dlib\dlib\external\libpng\pngread.c">
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ProjectDir)..\..\lib\annonet\annonet_things\dlib\dlib\external\zlib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='DebugGrayscaleInput|x64'">$(ProjectDir)..\..\lib\annonet\annonet_things\dlib\dlib\external\zlib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ProjectDir)..\..\lib\annonet\annonet_things\dlib\dlib\external\zlib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='ReleaseGrayscaleInput|x64'">$(ProjectDir)..\..\lib\annonet\annonet_things\dlib\dlib\external\zlib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='DebugGrayscaleInput|x64'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='ReleaseGrayscaleInput|x64'">CompileAsC</CompileAs>
+    </ClCompile>
+    <ClCompile Include="..\..\lib\annonet\annonet_things\dlib\dlib\external\libpng\pngrio.c">
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ProjectDir)..\..\lib\annonet\annonet_things\dlib\dlib\external\zlib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='DebugGrayscaleInput|x64'">$(ProjectDir)..\..\lib\annonet\annonet_things\dlib\dlib\external\zlib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ProjectDir)..\..\lib\annonet\annonet_things\dlib\dlib\external\zlib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='ReleaseGrayscaleInput|x64'">$(ProjectDir)..\..\lib\annonet\annonet_things\dlib\dlib\external\zlib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='DebugGrayscaleInput|x64'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='ReleaseGrayscaleInput|x64'">CompileAsC</CompileAs>
+    </ClCompile>
+    <ClCompile Include="..\..\lib\annonet\annonet_things\dlib\dlib\external\libpng\pngrtran.c">
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ProjectDir)..\..\lib\annonet\annonet_things\dlib\dlib\external\zlib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='DebugGrayscaleInput|x64'">$(ProjectDir)..\..\lib\annonet\annonet_things\dlib\dlib\external\zlib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ProjectDir)..\..\lib\annonet\annonet_things\dlib\dlib\external\zlib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='ReleaseGrayscaleInput|x64'">$(ProjectDir)..\..\lib\annonet\annonet_things\dlib\dlib\external\zlib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='DebugGrayscaleInput|x64'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='ReleaseGrayscaleInput|x64'">CompileAsC</CompileAs>
+    </ClCompile>
+    <ClCompile Include="..\..\lib\annonet\annonet_things\dlib\dlib\external\libpng\pngrutil.c">
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ProjectDir)..\..\lib\annonet\annonet_things\dlib\dlib\external\zlib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='DebugGrayscaleInput|x64'">$(ProjectDir)..\..\lib\annonet\annonet_things\dlib\dlib\external\zlib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ProjectDir)..\..\lib\annonet\annonet_things\dlib\dlib\external\zlib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='ReleaseGrayscaleInput|x64'">$(ProjectDir)..\..\lib\annonet\annonet_things\dlib\dlib\external\zlib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='DebugGrayscaleInput|x64'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='ReleaseGrayscaleInput|x64'">CompileAsC</CompileAs>
+    </ClCompile>
+    <ClCompile Include="..\..\lib\annonet\annonet_things\dlib\dlib\external\libpng\pngset.c">
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ProjectDir)..\..\lib\annonet\annonet_things\dlib\dlib\external\zlib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='DebugGrayscaleInput|x64'">$(ProjectDir)..\..\lib\annonet\annonet_things\dlib\dlib\external\zlib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ProjectDir)..\..\lib\annonet\annonet_things\dlib\dlib\external\zlib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='ReleaseGrayscaleInput|x64'">$(ProjectDir)..\..\lib\annonet\annonet_things\dlib\dlib\external\zlib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='DebugGrayscaleInput|x64'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='ReleaseGrayscaleInput|x64'">CompileAsC</CompileAs>
+    </ClCompile>
+    <ClCompile Include="..\..\lib\annonet\annonet_things\dlib\dlib\external\libpng\pngtrans.c">
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ProjectDir)..\..\lib\annonet\annonet_things\dlib\dlib\external\zlib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='DebugGrayscaleInput|x64'">$(ProjectDir)..\..\lib\annonet\annonet_things\dlib\dlib\external\zlib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ProjectDir)..\..\lib\annonet\annonet_things\dlib\dlib\external\zlib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='ReleaseGrayscaleInput|x64'">$(ProjectDir)..\..\lib\annonet\annonet_things\dlib\dlib\external\zlib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='DebugGrayscaleInput|x64'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='ReleaseGrayscaleInput|x64'">CompileAsC</CompileAs>
+    </ClCompile>
+    <ClCompile Include="..\..\lib\annonet\annonet_things\dlib\dlib\external\libpng\pngwio.c">
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ProjectDir)..\..\lib\annonet\annonet_things\dlib\dlib\external\zlib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='DebugGrayscaleInput|x64'">$(ProjectDir)..\..\lib\annonet\annonet_things\dlib\dlib\external\zlib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ProjectDir)..\..\lib\annonet\annonet_things\dlib\dlib\external\zlib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='ReleaseGrayscaleInput|x64'">$(ProjectDir)..\..\lib\annonet\annonet_things\dlib\dlib\external\zlib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='DebugGrayscaleInput|x64'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='ReleaseGrayscaleInput|x64'">CompileAsC</CompileAs>
+    </ClCompile>
+    <ClCompile Include="..\..\lib\annonet\annonet_things\dlib\dlib\external\libpng\pngwrite.c">
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ProjectDir)..\..\lib\annonet\annonet_things\dlib\dlib\external\zlib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='DebugGrayscaleInput|x64'">$(ProjectDir)..\..\lib\annonet\annonet_things\dlib\dlib\external\zlib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ProjectDir)..\..\lib\annonet\annonet_things\dlib\dlib\external\zlib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='ReleaseGrayscaleInput|x64'">$(ProjectDir)..\..\lib\annonet\annonet_things\dlib\dlib\external\zlib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='DebugGrayscaleInput|x64'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='ReleaseGrayscaleInput|x64'">CompileAsC</CompileAs>
+    </ClCompile>
+    <ClCompile Include="..\..\lib\annonet\annonet_things\dlib\dlib\external\libpng\pngwtran.c">
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ProjectDir)..\..\lib\annonet\annonet_things\dlib\dlib\external\zlib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='DebugGrayscaleInput|x64'">$(ProjectDir)..\..\lib\annonet\annonet_things\dlib\dlib\external\zlib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ProjectDir)..\..\lib\annonet\annonet_things\dlib\dlib\external\zlib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='ReleaseGrayscaleInput|x64'">$(ProjectDir)..\..\lib\annonet\annonet_things\dlib\dlib\external\zlib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='DebugGrayscaleInput|x64'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='ReleaseGrayscaleInput|x64'">CompileAsC</CompileAs>
+    </ClCompile>
+    <ClCompile Include="..\..\lib\annonet\annonet_things\dlib\dlib\external\libpng\pngwutil.c">
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ProjectDir)..\..\lib\annonet\annonet_things\dlib\dlib\external\zlib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='DebugGrayscaleInput|x64'">$(ProjectDir)..\..\lib\annonet\annonet_things\dlib\dlib\external\zlib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ProjectDir)..\..\lib\annonet\annonet_things\dlib\dlib\external\zlib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='ReleaseGrayscaleInput|x64'">$(ProjectDir)..\..\lib\annonet\annonet_things\dlib\dlib\external\zlib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='DebugGrayscaleInput|x64'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='ReleaseGrayscaleInput|x64'">CompileAsC</CompileAs>
+    </ClCompile>
+    <ClCompile Include="..\..\lib\annonet\annonet_things\dlib\dlib\external\zlib\adler32.c">
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='DebugGrayscaleInput|x64'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='ReleaseGrayscaleInput|x64'">CompileAsC</CompileAs>
+    </ClCompile>
+    <ClCompile Include="..\..\lib\annonet\annonet_things\dlib\dlib\external\zlib\compress.c">
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='DebugGrayscaleInput|x64'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='ReleaseGrayscaleInput|x64'">CompileAsC</CompileAs>
+    </ClCompile>
+    <ClCompile Include="..\..\lib\annonet\annonet_things\dlib\dlib\external\zlib\crc32.c">
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='DebugGrayscaleInput|x64'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='ReleaseGrayscaleInput|x64'">CompileAsC</CompileAs>
+    </ClCompile>
+    <ClCompile Include="..\..\lib\annonet\annonet_things\dlib\dlib\external\zlib\deflate.c">
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='DebugGrayscaleInput|x64'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='ReleaseGrayscaleInput|x64'">CompileAsC</CompileAs>
+    </ClCompile>
+    <ClCompile Include="..\..\lib\annonet\annonet_things\dlib\dlib\external\zlib\gzclose.c">
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='DebugGrayscaleInput|x64'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='ReleaseGrayscaleInput|x64'">CompileAsC</CompileAs>
+    </ClCompile>
+    <ClCompile Include="..\..\lib\annonet\annonet_things\dlib\dlib\external\zlib\gzlib.c">
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='DebugGrayscaleInput|x64'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='ReleaseGrayscaleInput|x64'">CompileAsC</CompileAs>
+    </ClCompile>
+    <ClCompile Include="..\..\lib\annonet\annonet_things\dlib\dlib\external\zlib\gzread.c">
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='DebugGrayscaleInput|x64'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='ReleaseGrayscaleInput|x64'">CompileAsC</CompileAs>
+    </ClCompile>
+    <ClCompile Include="..\..\lib\annonet\annonet_things\dlib\dlib\external\zlib\gzwrite.c">
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='DebugGrayscaleInput|x64'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='ReleaseGrayscaleInput|x64'">CompileAsC</CompileAs>
+    </ClCompile>
+    <ClCompile Include="..\..\lib\annonet\annonet_things\dlib\dlib\external\zlib\infback.c">
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='DebugGrayscaleInput|x64'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='ReleaseGrayscaleInput|x64'">CompileAsC</CompileAs>
+    </ClCompile>
+    <ClCompile Include="..\..\lib\annonet\annonet_things\dlib\dlib\external\zlib\inffast.c">
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='DebugGrayscaleInput|x64'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='ReleaseGrayscaleInput|x64'">CompileAsC</CompileAs>
+    </ClCompile>
+    <ClCompile Include="..\..\lib\annonet\annonet_things\dlib\dlib\external\zlib\inflate.c">
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='DebugGrayscaleInput|x64'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='ReleaseGrayscaleInput|x64'">CompileAsC</CompileAs>
+    </ClCompile>
+    <ClCompile Include="..\..\lib\annonet\annonet_things\dlib\dlib\external\zlib\inftrees.c">
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='DebugGrayscaleInput|x64'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='ReleaseGrayscaleInput|x64'">CompileAsC</CompileAs>
+    </ClCompile>
+    <ClCompile Include="..\..\lib\annonet\annonet_things\dlib\dlib\external\zlib\trees.c">
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='DebugGrayscaleInput|x64'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='ReleaseGrayscaleInput|x64'">CompileAsC</CompileAs>
+    </ClCompile>
+    <ClCompile Include="..\..\lib\annonet\annonet_things\dlib\dlib\external\zlib\uncompr.c">
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='DebugGrayscaleInput|x64'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='ReleaseGrayscaleInput|x64'">CompileAsC</CompileAs>
+    </ClCompile>
+    <ClCompile Include="..\..\lib\annonet\annonet_things\dlib\dlib\external\zlib\zutil.c">
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='DebugGrayscaleInput|x64'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='ReleaseGrayscaleInput|x64'">CompileAsC</CompileAs>
+    </ClCompile>
+    <ClCompile Include="..\..\lib\annonet\annonet_things\dlib\dlib\image_loader\jpeg_loader.cpp">
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ProjectDir)\..\..\lib\annonet\annonet_things\dlib\dlib\external\libjpeg;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='DebugGrayscaleInput|x64'">$(ProjectDir)\..\..\lib\annonet\annonet_things\dlib\dlib\external\libjpeg;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ProjectDir)\..\..\lib\annonet\annonet_things\dlib\dlib\external\libjpeg;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='ReleaseGrayscaleInput|x64'">$(ProjectDir)\..\..\lib\annonet\annonet_things\dlib\dlib\external\libjpeg;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <ClCompile Include="..\..\lib\annonet\annonet_things\dlib\dlib\image_loader\png_loader.cpp">
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ProjectDir)..\..\lib\annonet\annonet_things\dlib\dlib\external\libpng;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='DebugGrayscaleInput|x64'">$(ProjectDir)..\..\lib\annonet\annonet_things\dlib\dlib\external\libpng;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ProjectDir)..\..\lib\annonet\annonet_things\dlib\dlib\external\libpng;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='ReleaseGrayscaleInput|x64'">$(ProjectDir)..\..\lib\annonet\annonet_things\dlib\dlib\external\libpng;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <ClCompile Include="..\..\lib\annonet\annonet_things\dlib\dlib\image_saver\save_png.cpp">
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ProjectDir)..\..\lib\annonet\annonet_things\dlib\dlib\external\libpng;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='DebugGrayscaleInput|x64'">$(ProjectDir)..\..\lib\annonet\annonet_things\dlib\dlib\external\libpng;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ProjectDir)..\..\lib\annonet\annonet_things\dlib\dlib\external\libpng;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='ReleaseGrayscaleInput|x64'">$(ProjectDir)..\..\lib\annonet\annonet_things\dlib\dlib\external\libpng;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <ClCompile Include="..\..\lib\annonet\annonet_things\dlib\dlib\test_for_odr_violations.cpp" />
+    <ClCompile Include="..\..\lib\annonet\annonet_things\dlib\dlib\threads\async.cpp" />
+    <ClCompile Include="..\..\lib\annonet\annonet_things\dlib\dlib\threads\multithreaded_object_extension.cpp" />
+    <ClCompile Include="..\..\lib\annonet\annonet_things\dlib\dlib\threads\threaded_object_extension.cpp" />
+    <ClCompile Include="..\..\lib\annonet\annonet_things\dlib\dlib\threads\threads_kernel_1.cpp" />
+    <ClCompile Include="..\..\lib\annonet\annonet_things\dlib\dlib\threads\threads_kernel_2.cpp" />
+    <ClCompile Include="..\..\lib\annonet\annonet_things\dlib\dlib\threads\threads_kernel_shared.cpp" />
+    <ClCompile Include="..\..\lib\annonet\annonet_things\dlib\dlib\threads\thread_pool_extension.cpp" />
+    <ClCompile Include="FindThings.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\lib\annonet\annonet_things\annonet.h" />
+    <ClInclude Include="..\..\lib\annonet\annonet_things\annonet_infer.h" />
+    <ClInclude Include="..\..\lib\annonet\annonet_things\annonet_parse_anno_classes.h" />
+    <ClInclude Include="..\..\lib\annonet\annonet_things\cpp-read-file-in-memory\read-file-in-memory.h" />
+    <ClInclude Include="..\..\lib\annonet\annonet_things\dlib-dnn-pimpl-wrapper\NetDimensions.h" />
+    <ClInclude Include="..\..\lib\annonet\annonet_things\dlib-dnn-pimpl-wrapper\NetPimpl.h" />
+    <ClInclude Include="..\..\lib\annonet\annonet_things\dlib-dnn-pimpl-wrapper\NetStructure.h" />
+    <ClInclude Include="..\..\lib\annonet\annonet_things\tiling\dlib-wrapper.h" />
+    <ClInclude Include="..\..\lib\annonet\annonet_things\tiling\tiling.h" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+</Project>

@@ -15,6 +15,7 @@ int main(int argc, char* argv[])
     claim::PostOffice postOffice;
     postOffice.Initialize(iniFile, "ISto");
     postOffice.Subscribe("Image");
+    postOffice.Subscribe("AnnoResultJson");
     postOffice.Subscribe("MakePermanent");
     postOffice.Subscribe("MakeRotating");
 
@@ -75,7 +76,7 @@ int main(int argc, char* argv[])
         slaim::Message msg;
         if (postOffice.Receive(msg, 1.0)) {
             claim::AttributeMessage amsg(msg);
-            if (msg.m_type == "Image") {
+            if (msg.m_type == "Image" || amsg.m_type == "AnnoResultJson") {
                 const auto& data = amsg.m_attributes["data"];
                 if (!data.empty()) {
                     const auto& id = amsg.m_attributes["id"];
