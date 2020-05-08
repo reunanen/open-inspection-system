@@ -258,6 +258,8 @@ int main(int argc, char* argv[])
                         amsg.m_attributes["data"] = format_anno_results(labels, anno_classes);
                         amsg.m_attributes["timestamp"] = amsg.m_attributes["timestamp"];
                         postOffice.Send(amsg);
+
+                        labels.clear();
                     }
                 }
             }
