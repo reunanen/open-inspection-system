@@ -16,9 +16,14 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Numcore_messaging_library", "lib\Numcore_messaging_library\Numcore_messaging_library.vcxproj", "{5853D66D-F89D-49C6-A590-71C828686ABE}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ImageViewer", "testing\imageviewer\ImageViewer.vcxproj", "{0890ECAC-BDEB-411F-A46F-162DFEE4408B}"
+	ProjectSection(ProjectDependencies) = postProject
+		{5853D66D-F89D-49C6-A590-71C828686ABE} = {5853D66D-F89D-49C6-A590-71C828686ABE}
+		{6B88C78E-FE6F-42B1-B6F8-3EA3D2ACF05F} = {6B88C78E-FE6F-42B1-B6F8-3EA3D2ACF05F}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ImageStorage", "imagestorage\ImageStorage.vcxproj", "{11579AE1-90EA-4886-954A-B746B0824C05}"
 	ProjectSection(ProjectDependencies) = postProject
+		{5853D66D-F89D-49C6-A590-71C828686ABE} = {5853D66D-F89D-49C6-A590-71C828686ABE}
 		{4375BAC5-0E9A-4B45-9792-903178269253} = {4375BAC5-0E9A-4B45-9792-903178269253}
 	EndProjectSection
 EndProject
